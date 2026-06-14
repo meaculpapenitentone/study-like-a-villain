@@ -2,9 +2,12 @@
   "name": "Study Like a Villain",
   "short_name": "Study Villain",
   "description": "A villain-themed Pomodoro study planner with weighted study cycles, saved progress, multilingual interface, and rotating philosophical quotes.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
+  "categories": ["productivity", "education"],
   "background_color": "#211225",
   "theme_color": "#37183c",
   "icons": [
