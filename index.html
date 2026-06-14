@@ -29,12 +29,12 @@
     <label for="language-select" data-i18n="language.label">Language</label>
     <select id="language-select" class="language-select" data-i18n-aria-label="language.label">
       <option value="en" data-i18n="language.english">English</option>
-      <option value="pt-BR" data-i18n="language.portuguese">PortuguÃªs</option>
-      <option value="es" data-i18n="language.spanish">EspaÃ±ol</option>
-      <option value="fr" data-i18n="language.french">FranÃ§ais</option>
+      <option value="pt-BR" data-i18n="language.portuguese">Português</option>
+      <option value="es" data-i18n="language.spanish">Español</option>
+      <option value="fr" data-i18n="language.french">Français</option>
       <option value="de" data-i18n="language.german">Deutsch</option>
       <option value="it" data-i18n="language.italian">Italiano</option>
-      <option value="ja" data-i18n="language.japanese">æ—¥æœ¬èªž</option>
+      <option value="ja" data-i18n="language.japanese">日本語</option>
     </select>
   </div>
 
@@ -66,7 +66,7 @@
           </p>
 
           <button id="generate-cycle-button" class="confirm-button">
-            <span class="button-icon" aria-hidden="true">â–¶</span>
+            <span class="button-icon" aria-hidden="true">▶</span>
             <span data-i18n="setup.generateCycle">Generate cycle!</span>
           </button>
         </div>
@@ -166,7 +166,7 @@
 
     <section id="cycle-screen" class="hidden">
       <h2 id="cycle-title" class="cycle-title" data-i18n="cycle.title">Study Cycle</h2>
-      <p class="cycle-subtitle">34h total Â· 17 blocks</p>
+      <p class="cycle-subtitle">34h total · 17 blocks</p>
 
       <section id="cycle-running-screen">
         <div class="current-card">
@@ -182,9 +182,9 @@
         </div>
 
         <div class="controls">
-          <button id="back-button" class="back-button" data-i18n="actions.back">â†© Back</button>
-          <button id="pause-button" class="pause-button" data-i18n="actions.pause">â¸ Pause</button>
-          <button id="play-button" class="play-button" data-i18n="actions.start">â–¶ Start</button>
+          <button id="back-button" class="back-button" data-i18n="actions.back">↩ Back</button>
+          <button id="pause-button" class="pause-button" data-i18n="actions.pause">⏸ Pause</button>
+          <button id="play-button" class="play-button" data-i18n="actions.start">▶ Start</button>
           <div id="completed-counter" class="completed-counter">
             <span id="completed-counter-text">0/17 completed</span>
           </div>
@@ -195,7 +195,7 @@
         <h3 data-i18n="cycle.timeline">Timeline</h3>
         <ol id="timeline-list"></ol>
 
-        <button id="bottom-back-button" class="back-button bottom-back-button" data-i18n="actions.back">â†© Back</button>
+        <button id="bottom-back-button" class="back-button bottom-back-button" data-i18n="actions.back">↩ Back</button>
       </section>
 
       <section id="cycle-completion-screen" class="completion-screen hidden">
@@ -203,10 +203,10 @@
           <span data-i18n="completion.firstCycle">Congratulations, you completed your first cycle!</span>
         </h2>
 
-        <div class="check-animation">âœ“</div>
+        <div class="check-animation">✓</div>
 
         <button id="completion-back-button" class="back-button completion-back-button">
-          <span data-i18n="actions.back">â†© Back</span>
+          <span data-i18n="actions.back">↩ Back</span>
         </button>
       </section>
     </section>
@@ -270,12 +270,12 @@ const STORAGE_KEY = "studyPomodoroAppClean";
           "language": {
                 "label": "Language",
                 "english": "English",
-                "portuguese": "PortuguÃªs",
-                "spanish": "EspaÃ±ol",
-                "french": "FranÃ§ais",
+                "portuguese": "Português",
+                "spanish": "Español",
+                "french": "Français",
                 "german": "Deutsch",
                 "italian": "Italiano",
-                "japanese": "æ—¥æœ¬èªž"
+                "japanese": "日本語"
           },
           "setup": {
                 "subjectsTitle": "Subject list",
@@ -287,9 +287,9 @@ const STORAGE_KEY = "studyPomodoroAppClean";
                 "emptyCycles": "No saved cycles yet."
           },
           "actions": {
-                "start": "â–¶ Start",
-                "pause": "â¸ Pause",
-                "back": "â†© Back",
+                "start": "▶ Start",
+                "pause": "⏸ Pause",
+                "back": "↩ Back",
                 "delete": "Delete",
                 "cancel": "Cancel",
                 "confirm": "Confirm"
@@ -758,9 +758,15 @@ const STORAGE_KEY = "studyPomodoroAppClean";
       const stepKey = tutorialStepKeys[currentTutorialStep];
       const isFirstStep = currentTutorialStep === 0;
       const isLastStep = currentTutorialStep === totalSteps - 1;
+      const titleKey = `${stepKey}.title`;
+      const textKey = `${stepKey}.text`;
+      const fallbackTitle = getTranslationValue(MINIMAL_EN_TRANSLATIONS, titleKey);
+      const fallbackText = getTranslationValue(MINIMAL_EN_TRANSLATIONS, textKey);
+      const translatedTitle = t(titleKey);
+      const translatedText = t(textKey);
 
-      tutorialTitle.textContent = t(`${stepKey}.title`);
-      tutorialText.textContent = t(`${stepKey}.text`);
+      tutorialTitle.textContent = translatedTitle && translatedTitle !== titleKey ? translatedTitle : fallbackTitle;
+      tutorialText.textContent = translatedText && translatedText !== textKey ? translatedText : fallbackText;
       tutorialProgress.textContent = t("tutorial.progress", { current: currentTutorialStep + 1, total: totalSteps });
       tutorialBackButton.disabled = isFirstStep;
       tutorialNextButton.textContent = isLastStep ? t("tutorial.finish") : t("tutorial.next");
@@ -898,7 +904,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
       try {
         return JSON.parse(rawValue);
       } catch (error) {
-        console.warn(`Estado salvo em ${key} estava invÃ¡lido e foi ignorado.`, error);
+        console.warn(`Estado salvo em ${key} estava inválido e foi ignorado.`, error);
         safeRemoveStorageItem(key);
         return fallbackValue;
       }
@@ -1224,7 +1230,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
       }
 
       const quote = PHILOSOPHER_QUOTES[nextQuoteIndex];
-      const quoteLabel = `â€œ${quote.text}â€ - ${quote.author}`;
+      const quoteLabel = `“${quote.text}” - ${quote.author}`;
 
       villainQuote.classList.toggle("long-quote", quoteLabel.length > 88);
       villainQuote.classList.toggle("very-long-quote", quoteLabel.length > 108);
@@ -1779,7 +1785,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
         li.innerHTML = `
           <div class="saved-cycle-info">
             <span class="saved-cycle-name">${escapeHtml(cycle.name || t("cycle.defaultName"))} <small>(${t("cycle.completedTimes", { count: cycle.completedCount || 0 })})</small></span>
-            <span class="saved-cycle-meta">${status} Â· ${formatTotalStudyHours(cycleHours)} Â· ${progress}</span>
+            <span class="saved-cycle-meta">${status} · ${formatTotalStudyHours(cycleHours)} · ${progress}</span>
           </div>
 
           <div class="saved-cycle-actions">
@@ -2218,7 +2224,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
           }
         }
 
-        const status = isActiveBlock ? "â–¶" : "â—‹";
+        const status = isActiveBlock ? "▶" : "○";
 
         const difficultyLabel = getDifficultyLabel(block.difficulty);
 
