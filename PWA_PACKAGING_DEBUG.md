@@ -10,8 +10,9 @@ This build was simplified for PWABuilder Windows/Microsoft Store packaging.
 - Manifest icons were reduced to the required PNG icons:
   - `icons/icon-192.png`
   - `icons/icon-512.png`
-- `service-worker.js` cache was updated to `study-like-a-villain-v20-packaging-safe`.
-- The service worker cache list was simplified and no longer caches screenshots.
+- `service-worker.js` was updated to `study-like-a-villain-v21-packaging-minimal`.
+- The service worker no longer precaches files during install.
+- Existing caches are cleared during activate to remove older packaging-test caches.
 - The service worker now ignores cross-origin requests.
 
 ## URLs to test

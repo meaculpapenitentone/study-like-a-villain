@@ -1,5 +1,4 @@
 {
-  "id": "./",
   "name": "Study Like a Villain",
   "short_name": "Study Villain",
   "start_url": "./",
@@ -7,8 +6,6 @@
   "display": "standalone",
   "background_color": "#12051f",
   "theme_color": "#7c3aed",
-  "orientation": "any",
-  "categories": ["education", "productivity"],
   "icons": [
     {
       "src": "icons/icon-192.png",
