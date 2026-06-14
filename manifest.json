@@ -53,28 +53,5 @@
       "type": "image/png",
       "purpose": "any"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshots/home-desktop.png",
-      "sizes": "1869x991",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Create study subjects and priorities"
-    },
-    {
-      "src": "screenshots/tutorial-desktop.png",
-      "sizes": "1870x991",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Configure your study cycle"
-    },
-    {
-      "src": "screenshots/timer-desktop.png",
-      "sizes": "1868x990",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Follow your study cycle with a focused timer"
-    }
   ]
 }
