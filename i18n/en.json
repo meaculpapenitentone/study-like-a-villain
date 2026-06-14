@@ -122,7 +122,7 @@
   "microcopy": {
     "noSubjects": "Add your first subject to start your cycle.",
     "readyToGenerate": "Now generate your study cycle. You can choose the total time and block duration in the next step.",
-    "beforeStart": "Drag the blocks to adjust the order before you start.",
+    "beforeStart": "Drag the blocks to change the order of the subjects.",
     "timerRunning": "Timer in progress: focus on the current subject until the block ends.",
     "timerPaused": "Timer paused: you can reorganize the blocks, including the current subject."
   }

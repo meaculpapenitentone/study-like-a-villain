@@ -122,7 +122,7 @@
   "microcopy": {
     "noSubjects": "Füge dein erstes Fach hinzu, um deinen Zyklus zu starten.",
     "readyToGenerate": "Erstelle jetzt deinen Lernzyklus. Im nächsten Schritt kannst du die Gesamtzeit und die Blockdauer wählen.",
-    "beforeStart": "Ziehe die Blöcke, um die Reihenfolge vor dem Start anzupassen.",
+    "beforeStart": "Ziehe die Blöcke, um die Reihenfolge der Fächer zu ändern.",
     "timerRunning": "Timer läuft: Konzentriere dich auf das aktuelle Fach, bis der Block endet.",
     "timerPaused": "Timer pausiert: Du kannst die Blöcke neu ordnen, einschließlich des aktuellen Fachs."
   }

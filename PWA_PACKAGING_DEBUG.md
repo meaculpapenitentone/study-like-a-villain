@@ -1,33 +1,36 @@
 # PWA Packaging Debug
 
-This build was simplified for PWABuilder Windows/Microsoft Store packaging.
+This is the production PWA build for Microsoft Store packaging.
 
-## What changed
+## Current production settings
 
-- `manifest.json` was reduced to essential packaging fields only.
-- The `screenshots` field remains removed because PWABuilder package analysis was hanging.
-- Optional and experimental manifest fields are not present.
-- Manifest icons were reduced to the required PNG icons:
+- `manifest.json` includes complete production metadata.
+- `screenshots` are enabled in the manifest.
+- Manifest icons use PNG files only:
   - `icons/icon-192.png`
   - `icons/icon-512.png`
-- `service-worker.js` was updated to `study-like-a-villain-v21-packaging-minimal`.
-- The service worker no longer precaches files during install.
-- Existing caches are cleared during activate to remove older packaging-test caches.
-- The service worker now ignores cross-origin requests.
+- `service-worker.js` cache version:
+  - `study-like-a-villain-v21-production`
+- The service worker precaches local essential assets only.
+- The service worker ignores non-GET and cross-origin requests.
+- All PWA paths are relative for GitHub Pages compatibility.
 
-## URLs to test
+## URLs to test after deploy
 
 - App: https://meaculpapenitentone.github.io/study-like-a-villain/
 - Manifest: https://meaculpapenitentone.github.io/study-like-a-villain/manifest.json
 - 192 icon: https://meaculpapenitentone.github.io/study-like-a-villain/icons/icon-192.png
 - 512 icon: https://meaculpapenitentone.github.io/study-like-a-villain/icons/icon-512.png
+- Home screenshot: https://meaculpapenitentone.github.io/study-like-a-villain/screenshots/home-desktop.png
+- Timer screenshot: https://meaculpapenitentone.github.io/study-like-a-villain/screenshots/timer-desktop.png
+- Tutorial screenshot: https://meaculpapenitentone.github.io/study-like-a-villain/screenshots/tutorial-desktop.png
 - Service worker: https://meaculpapenitentone.github.io/study-like-a-villain/service-worker.js
 
 ## PWABuilder retry steps
 
 1. Deploy this build to GitHub Pages.
-2. Open the app once in an incognito/private window.
-3. Confirm the manifest and icon URLs above return `200`.
-4. Run PWABuilder again with:
+2. Confirm the URLs above return `200`.
+3. Open the app once in an incognito/private window.
+4. Run PWABuilder with:
    `https://meaculpapenitentone.github.io/study-like-a-villain/`
-5. If PWABuilder still hangs, try clearing the browser site data for PWABuilder and rerun package generation.
+5. If PWABuilder still hangs, clear PWABuilder site data and retry package generation.

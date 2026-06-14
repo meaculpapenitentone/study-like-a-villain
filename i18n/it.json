@@ -122,7 +122,7 @@
   "microcopy": {
     "noSubjects": "Aggiungi la tua prima materia per iniziare il ciclo.",
     "readyToGenerate": "Ora genera il tuo ciclo di studio. Potrai scegliere il tempo totale e la durata dei blocchi nel passaggio successivo.",
-    "beforeStart": "Trascina i blocchi per regolare l'ordine prima di iniziare.",
+    "beforeStart": "Trascina i blocchi per modificare l'ordine delle materie.",
     "timerRunning": "Timer in corso: concentrati sulla materia attuale fino alla fine del blocco.",
     "timerPaused": "Timer in pausa: puoi riordinare i blocchi, inclusa la materia attuale."
   }
