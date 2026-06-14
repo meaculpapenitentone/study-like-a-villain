@@ -366,7 +366,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
           "microcopy": {
                 "noSubjects": "Add your first subject to start your cycle.",
                 "readyToGenerate": "Now generate your study cycle.",
-                "beforeStart": "Drag the blocks to adjust the order before you start.",
+                "beforeStart": "Drag the blocks to change the order of the subjects.",
                 "timerRunning": "Timer in progress: focus on the current subject until the block ends.",
                 "timerPaused": "Timer paused: you can reorganize the blocks, including the current subject."
           }
@@ -1357,6 +1357,47 @@ const STORAGE_KEY = "studyPomodoroAppClean";
 
       const priorityMenus = document.querySelectorAll("#subject-list .priority-menu");
 
+      function closePriorityMenus() {
+        document.querySelectorAll("#subject-list .priority-menu.open").forEach(openMenu => {
+          openMenu.classList.remove("open");
+          openMenu.closest("li")?.classList.remove("priority-dropdown-open");
+          openMenu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
+          openMenu.querySelector(".priority-options")?.removeAttribute("style");
+        });
+      }
+
+      function positionPriorityMenu(menu) {
+        const trigger = menu.querySelector(".priority-menu-button");
+        const dropdown = menu.querySelector(".priority-options");
+
+        if (!trigger || !dropdown) {
+          return;
+        }
+
+        const triggerRect = trigger.getBoundingClientRect();
+        const dropdownWidth = Math.max(150, triggerRect.width);
+        const viewportPadding = 12;
+        const left = Math.min(
+          window.innerWidth - dropdownWidth - viewportPadding,
+          Math.max(viewportPadding, triggerRect.right - dropdownWidth)
+        );
+        const belowTop = triggerRect.bottom + 6;
+
+        dropdown.style.position = "fixed";
+        dropdown.style.left = `${left}px`;
+        dropdown.style.right = "auto";
+        dropdown.style.width = `${dropdownWidth}px`;
+        dropdown.style.zIndex = "2000";
+
+        const dropdownHeight = dropdown.offsetHeight;
+        const aboveTop = triggerRect.top - dropdownHeight - 6;
+        const top = belowTop + dropdownHeight <= window.innerHeight - viewportPadding
+          ? belowTop
+          : Math.max(viewportPadding, aboveTop);
+
+        dropdown.style.top = `${top}px`;
+      }
+
       priorityMenus.forEach(menu => {
         const trigger = menu.querySelector(".priority-menu-button");
         const options = menu.querySelectorAll(".priority-option");
@@ -1364,15 +1405,15 @@ const STORAGE_KEY = "studyPomodoroAppClean";
         trigger.addEventListener("click", function () {
           const willOpen = !menu.classList.contains("open");
 
-          document.querySelectorAll("#subject-list .priority-menu.open").forEach(openMenu => {
-            openMenu.classList.remove("open");
-            openMenu.closest("li")?.classList.remove("priority-dropdown-open");
-            openMenu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
-          });
+          closePriorityMenus();
 
           menu.classList.toggle("open", willOpen);
           menu.closest("li")?.classList.toggle("priority-dropdown-open", willOpen);
           trigger.setAttribute("aria-expanded", String(willOpen));
+
+          if (willOpen) {
+            positionPriorityMenu(menu);
+          }
         });
 
         options.forEach(option => {
@@ -2627,6 +2668,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
         menu.classList.remove("open");
         menu.closest("li")?.classList.remove("priority-dropdown-open");
         menu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
+        menu.querySelector(".priority-options")?.removeAttribute("style");
       });
     });
 
@@ -2639,6 +2681,7 @@ const STORAGE_KEY = "studyPomodoroAppClean";
         menu.classList.remove("open");
         menu.closest("li")?.classList.remove("priority-dropdown-open");
         menu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
+        menu.querySelector(".priority-options")?.removeAttribute("style");
       });
     });
 

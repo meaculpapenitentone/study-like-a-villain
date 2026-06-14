@@ -1,4 +1,4 @@
-const CACHE_NAME = "study-like-a-villain-v13";
+const CACHE_NAME = "study-like-a-villain-v15";
 
 const CORE_ASSETS = [
   "./",
