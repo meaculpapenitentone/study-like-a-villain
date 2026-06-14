@@ -1,4 +1,4 @@
-const CACHE_NAME = "study-like-a-villain-v18";
+const CACHE_NAME = "study-like-a-villain-v20-packaging-safe";
 
 const CORE_ASSETS = [
   "./",
@@ -19,17 +19,8 @@ const CORE_ASSETS = [
   "i18n/quotes/de.json",
   "i18n/quotes/it.json",
   "i18n/quotes/ja.json",
-  "icons/icon-source.png",
-  "icons/icon-1024.png",
-  "icons/icon-512.png",
   "icons/icon-192.png",
-  "icons/icon-180.png",
-  "icons/icon-64.png",
-  "icons/icon-32.png",
-  "icons/icon-16.png",
-  "screenshots/home-desktop.png",
-  "screenshots/tutorial-desktop.png",
-  "screenshots/timer-desktop.png"
+  "icons/icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -58,25 +49,7 @@ self.addEventListener("fetch", event => {
   }
 
   const requestUrl = new URL(event.request.url);
-  const shouldPreferNetwork =
-    event.request.mode === "navigate" ||
-    requestUrl.pathname.endsWith(".html") ||
-    requestUrl.pathname.endsWith(".css") ||
-    requestUrl.pathname.endsWith(".js") ||
-    requestUrl.pathname.endsWith(".json");
-
-  if (shouldPreferNetwork) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
-          return response;
-        })
-        .catch(() => caches.match(event.request).then(cachedResponse => {
-          return cachedResponse || caches.match("index.html");
-        }))
-    );
+  if (requestUrl.origin !== self.location.origin) {
     return;
   }
 
