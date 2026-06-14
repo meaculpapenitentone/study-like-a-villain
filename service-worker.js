@@ -1,4 +1,4 @@
-const CACHE_NAME = "study-like-a-villain-v15";
+const CACHE_NAME = "study-like-a-villain-v16";
 
 const CORE_ASSETS = [
   "./",
@@ -26,7 +26,10 @@ const CORE_ASSETS = [
   "icons/icon-180.png",
   "icons/icon-64.png",
   "icons/icon-32.png",
-  "icons/icon-16.png"
+  "icons/icon-16.png",
+  "screenshots/home-desktop.png",
+  "screenshots/cycle-options-desktop.png",
+  "screenshots/timer-desktop.png"
 ];
 
 self.addEventListener("install", event => {
