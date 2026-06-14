@@ -1,0 +1,129 @@
+{
+  "app": {
+    "title": "Study Like a Villain",
+    "documentTitle": "Study Like a Villain Pomodoro"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "portuguese": "Português",
+    "spanish": "Español",
+    "french": "Français",
+    "german": "Deutsch",
+    "italian": "Italiano",
+    "japanese": "日本語"
+  },
+  "setup": {
+    "subjectsTitle": "Subject list",
+    "subjectPlaceholder": "Enter a subject",
+    "addSubject": "Add",
+    "emptySubjects": "No subjects added yet.",
+    "generateCycle": "Generate cycle!",
+    "savedCyclesTitle": "Saved cycles",
+    "emptyCycles": "No saved cycles yet."
+  },
+  "difficulty": {
+    "label": "Priority level:",
+    "ariaLabel": "Priority level",
+    "easy": "Low",
+    "medium": "Medium",
+    "hard": "High"
+  },
+  "actions": {
+    "back": "↩ Back",
+    "pause": "⏸ Pause",
+    "start": "▶ Start",
+    "continue": "▶ Continue",
+    "running": "In progress...",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete"
+  },
+  "cycle": {
+    "defaultName": "Villain Study Cycle",
+    "title": "Study Cycle",
+    "nameTitle": "New cycle name:",
+    "namePlaceholder": "Study cycle - Exam week",
+    "totalStudyTime": "Total study time:",
+    "blockDuration": "Duration of each subject:",
+    "modalHelp": "Choose the total time and the default duration of each block.",
+    "currentSubject": "Current subject:",
+    "remainingTime": "Time left:",
+    "timeline": "Timeline",
+    "subtitle": "{total} total · {blocks} blocks of {duration}",
+    "progress": "{completed}/{total} completed",
+    "savedProgress": "{completed}/{total} completed blocks",
+    "savedStatus": "In progress",
+    "completedTimes": "Cycle completed {count} times",
+    "unnamedSubject": "Unnamed subject"
+  },
+  "duration": {
+    "thirtyMinutes": "30 minutes",
+    "oneHour": "1 hour",
+    "ninetyMinutes": "1 hour and a half",
+    "twoHours": "2 hours",
+    "hourShort": "h",
+    "minuteShort": "min"
+  },
+  "completion": {
+    "firstCycle": "Congratulations, you completed your first cycle!",
+    "anotherCycle": "You completed another cycle!",
+    "finishedLabel": "FINISHED!"
+  },
+  "deleteCycle": {
+    "title": "Are you sure you want to delete this cycle?",
+    "warning": "This action cannot be undone."
+  },
+  "errors": {
+    "saveState": "Could not save the Pomodoro state.",
+    "saveStorage": "Could not save {key}.",
+    "removeStorage": "Could not remove {key}.",
+    "readStorage": "Could not read {key}."
+  },
+  "theme": {
+    "light": "Light theme",
+    "dark": "Dark theme"
+  },
+  "tutorial": {
+    "open": "How to use",
+    "openButton": "?",
+    "skip": "Skip",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Let's Study!",
+    "progress": "{current}/{total}",
+    "steps": {
+      "welcome": {
+        "title": "Welcome to Study Like a Villain",
+        "text": "Build study cycles by subject, priority and time. The app organizes your blocks so you only have to execute the plan."
+      },
+      "subjects": {
+        "title": "Add your subjects",
+        "text": "Register the subjects you need to study. Then choose the priority level of each one: low, medium or high."
+      },
+      "priority": {
+        "title": "Priority defines repetition",
+        "text": "High-priority subjects appear more often in the cycle. Low-priority subjects appear less often."
+      },
+      "cycle": {
+        "title": "Configure your cycle",
+        "text": "When generating a cycle, choose the name, total study time and duration of each block. You can use blocks of 30 minutes, 1 hour, 1 hour and a half or 2 hours."
+      },
+      "timer": {
+        "title": "Study until the timer ends",
+        "text": "Start the timer and study the current subject. When time runs out, the app automatically completes the block and moves to the next subject."
+      },
+      "reorder": {
+        "title": "Pause to reorganize",
+        "text": "You can drag future blocks to change the order. If you want to move the current subject, pause the timer first. Recommendation: try to finish the block before switching and take a short break before the next one."
+      }
+    }
+  },
+  "microcopy": {
+    "noSubjects": "Add your first subject to start your cycle.",
+    "readyToGenerate": "Now generate your study cycle. You can choose the total time and block duration in the next step.",
+    "beforeStart": "Drag the blocks to adjust the order before you start.",
+    "timerRunning": "Timer in progress: focus on the current subject until the block ends.",
+    "timerPaused": "Timer paused: you can reorganize the blocks, including the current subject."
+  }
+}

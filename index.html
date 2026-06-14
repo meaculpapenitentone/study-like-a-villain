@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#37183c">
+  <meta name="description" content="A villain-themed Pomodoro study planner with weighted study cycles, saved progress, multilingual interface, and rotating philosophical quotes.">
+  <meta name="application-name" content="Study Like a Villain">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Study Villain">
+  <title data-i18n="app.documentTitle">Study Like a Villain Pomodoro</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="icon" href="icons/icon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="icons/icon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="msapplication-TileImage" content="icons/icon-192.png">
+  <link rel="stylesheet" href="stylesStudyLikeAVillain.css">
+</head>
+
+<body>
+  <h1 id="main-title" data-i18n="app.title">Study Like a Villain</h1>
+
+  <button id="tutorial-open-button" class="tutorial-open-button" type="button" data-i18n="tutorial.openButton" data-i18n-title="tutorial.open" data-i18n-aria-label="tutorial.open">?</button>
+
+  <div class="language-control" aria-label="Language selector">
+    <label for="language-select" data-i18n="language.label">Language</label>
+    <select id="language-select" class="language-select" data-i18n-aria-label="language.label">
+      <option value="en" data-i18n="language.english">English</option>
+      <option value="pt-BR" data-i18n="language.portuguese">PortuguÃªs</option>
+      <option value="es" data-i18n="language.spanish">EspaÃ±ol</option>
+      <option value="fr" data-i18n="language.french">FranÃ§ais</option>
+      <option value="de" data-i18n="language.german">Deutsch</option>
+      <option value="it" data-i18n="language.italian">Italiano</option>
+      <option value="ja" data-i18n="language.japanese">æ—¥æœ¬èªž</option>
+    </select>
+  </div>
+
+
+  <main class="container">
+    <section id="setup-screen">
+
+      <section class="setup-panel subjects-panel" aria-labelledby="subjects-panel-title">
+        <h2 id="subjects-panel-title" class="setup-panel-title" data-i18n="setup.subjectsTitle">Subject list</h2>
+
+        <div class="setup-panel-body subjects-panel-body">
+          <p id="villain-quote" class="villain-quote">"Knowledge is power" - Francis Bacon</p>
+          <p id="setup-microcopy" class="app-microcopy"></p>
+
+          <div class="input-row">
+            <input
+              type="text"
+              id="subject-input"
+              placeholder="Enter a subject" data-i18n-placeholder="setup.subjectPlaceholder"
+            >
+
+            <button id="add-subject-button" data-i18n="setup.addSubject">Add</button>
+          </div>
+
+          <ul id="subject-list"></ul>
+
+          <p id="empty-message" class="empty-message">
+            <span data-i18n="setup.emptySubjects">No subjects added yet.</span>
+          </p>
+
+          <button id="generate-cycle-button" class="confirm-button">
+            <span class="button-icon" aria-hidden="true">â–¶</span>
+            <span data-i18n="setup.generateCycle">Generate cycle!</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="saved-cycles-section setup-panel" aria-labelledby="saved-cycles-panel-title">
+        <h2 id="saved-cycles-panel-title" class="setup-panel-title saved-cycles-title" data-i18n="setup.savedCyclesTitle">Saved cycles</h2>
+
+        <div class="setup-panel-body saved-cycles-panel-body">
+          <ul id="saved-cycles-list"></ul>
+
+          <p id="empty-cycles-message" class="empty-message">
+            <span data-i18n="setup.emptyCycles">No saved cycles yet.</span>
+          </p>
+        </div>
+      </section>
+    </section>
+
+    <section id="delete-cycle-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2 data-i18n="deleteCycle.title">Are you sure you want to delete this cycle?</h2>
+
+        <p class="modal-warning-text">
+          <span data-i18n="deleteCycle.warning">This action cannot be undone.</span>
+        </p>
+
+        <div class="modal-actions">
+          <button id="cancel-delete-cycle-button" class="secondary-button" data-i18n="actions.cancel">Cancel</button>
+          <button id="confirm-delete-cycle-button" class="delete-button" data-i18n="actions.delete">Delete</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cycle-name-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h2 data-i18n="cycle.nameTitle">New cycle name:</h2>
+
+        <input
+          type="text"
+          id="cycle-name-input"
+          placeholder="Study cycle - Exam week" data-i18n-placeholder="cycle.namePlaceholder"
+        >
+
+        <label class="modal-label" for="cycle-hours-input">
+          <span data-i18n="cycle.totalStudyTime">Total study time:</span>
+        </label>
+
+        <div class="time-input-group">
+          <label class="time-input-wrap">
+            <input
+              type="text"
+              id="cycle-hours-input"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              autocomplete="off"
+              value="34"
+              placeholder="34"
+            >
+            <span class="time-suffix">h</span>
+          </label>
+
+          <label class="time-input-wrap">
+            <input
+              type="text"
+              id="cycle-minutes-input"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              autocomplete="off"
+              value="0"
+              placeholder="00"
+            >
+            <span class="time-suffix">m</span>
+          </label>
+        </div>
+
+        <label class="modal-label" for="block-duration-input">
+          <span data-i18n="cycle.blockDuration">Duration of each subject:</span>
+        </label>
+
+        <select id="block-duration-input" class="block-duration-select">
+          <option value="1800" data-i18n="duration.thirtyMinutes">30 minutes</option>
+          <option value="3600" selected data-i18n="duration.oneHour">1 hour</option>
+          <option value="5400" data-i18n="duration.ninetyMinutes">1 hour and a half</option>
+          <option value="7200" data-i18n="duration.twoHours">2 hours</option>
+        </select>
+
+        <p class="modal-help-text">
+          <span data-i18n="cycle.modalHelp">Choose the total time and the default duration of each block.</span>
+        </p>
+
+        <div class="modal-actions">
+          <button id="cancel-cycle-name-button" class="secondary-button" data-i18n="actions.cancel">Cancel</button>
+          <button id="confirm-cycle-name-button" data-i18n="actions.confirm">Confirm</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cycle-screen" class="hidden">
+      <h2 id="cycle-title" class="cycle-title" data-i18n="cycle.title">Study Cycle</h2>
+      <p class="cycle-subtitle">34h total Â· 17 blocks</p>
+
+      <section id="cycle-running-screen">
+        <div class="current-card">
+          <div class="current-content">
+            <span data-i18n="cycle.currentSubject">Current subject:</span>
+            <strong id="current-subject">---</strong>
+          </div>
+
+          <div id="timer-card" class="timer-card">
+            <span data-i18n="cycle.remainingTime">Time left:</span>
+            <div id="timer-display" class="digital-display"></div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="back-button" class="back-button" data-i18n="actions.back">â†© Back</button>
+          <button id="pause-button" class="pause-button" data-i18n="actions.pause">â¸ Pause</button>
+          <button id="play-button" class="play-button" data-i18n="actions.start">â–¶ Start</button>
+          <div id="completed-counter" class="completed-counter">
+            <span id="completed-counter-text">0/17 completed</span>
+          </div>
+        </div>
+
+        <p id="cycle-microcopy" class="app-microcopy cycle-microcopy"></p>
+
+        <h3 data-i18n="cycle.timeline">Timeline</h3>
+        <ol id="timeline-list"></ol>
+
+        <button id="bottom-back-button" class="back-button bottom-back-button" data-i18n="actions.back">â†© Back</button>
+      </section>
+
+      <section id="cycle-completion-screen" class="completion-screen hidden">
+        <h2 id="completion-message" class="completion-message">
+          <span data-i18n="completion.firstCycle">Congratulations, you completed your first cycle!</span>
+        </h2>
+
+        <div class="check-animation">âœ“</div>
+
+        <button id="completion-back-button" class="back-button completion-back-button">
+          <span data-i18n="actions.back">â†© Back</span>
+        </button>
+      </section>
+    </section>
+  </main>
+
+  <section id="tutorial-modal" class="tutorial-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" tabindex="-1">
+    <div class="tutorial-modal">
+      <div class="tutorial-header">
+        <span id="tutorial-progress" class="tutorial-progress">1/6</span>
+        <button id="tutorial-skip-button" class="tutorial-skip-button" type="button" data-i18n="tutorial.skip">Skip</button>
+      </div>
+
+      <div class="tutorial-step-indicator" aria-hidden="true">
+        <span class="tutorial-dot active"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+      </div>
+
+      <h2 id="tutorial-title"></h2>
+      <p id="tutorial-text"></p>
+
+      <div class="tutorial-actions">
+        <button id="tutorial-back-button" class="secondary-button" type="button" data-i18n="tutorial.back">Back</button>
+        <button id="tutorial-next-button" type="button" data-i18n="tutorial.next">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+const STORAGE_KEY = "studyPomodoroAppClean";
+    const I18N_STORAGE_KEY = "studyPomodoroLanguage";
+    const TUTORIAL_STORAGE_KEY = "villainTutorialSeen";
+    const DEFAULT_LANGUAGE = "en";
+    const SUPPORTED_LANGUAGES = ["en", "pt-BR", "es", "fr", "de", "it", "ja"];
+    const LANGUAGE_FILES = {
+      en: "i18n/en.json",
+      "pt-BR": "i18n/pt-BR.json",
+      es: "i18n/es.json",
+      fr: "i18n/fr.json",
+      de: "i18n/de.json",
+      it: "i18n/it.json",
+      ja: "i18n/ja.json"
+    };
+    const QUOTE_FILES = {
+      en: "i18n/quotes/en.json",
+      "pt-BR": "i18n/quotes/pt-BR.json",
+      es: "i18n/quotes/es.json",
+      fr: "i18n/quotes/fr.json",
+      de: "i18n/quotes/de.json",
+      it: "i18n/quotes/it.json",
+      ja: "i18n/quotes/ja.json"
+    };
+    const MINIMAL_EN_TRANSLATIONS = {
+          "app": {
+                "title": "Study Like a Villain",
+                "documentTitle": "Study Like a Villain Pomodoro"
+          },
+          "language": {
+                "label": "Language",
+                "english": "English",
+                "portuguese": "PortuguÃªs",
+                "spanish": "EspaÃ±ol",
+                "french": "FranÃ§ais",
+                "german": "Deutsch",
+                "italian": "Italiano",
+                "japanese": "æ—¥æœ¬èªž"
+          },
+          "setup": {
+                "subjectsTitle": "Subject list",
+                "subjectPlaceholder": "Enter a subject",
+                "addSubject": "Add",
+                "emptySubjects": "No subjects added yet.",
+                "generateCycle": "Generate cycle!",
+                "savedCyclesTitle": "Saved cycles",
+                "emptyCycles": "No saved cycles yet."
+          },
+          "actions": {
+                "start": "â–¶ Start",
+                "pause": "â¸ Pause",
+                "back": "â†© Back",
+                "delete": "Delete",
+                "cancel": "Cancel",
+                "confirm": "Confirm"
+          },
+          "difficulty": {
+                "label": "Priority level:",
+                "ariaLabel": "Priority level",
+                "easy": "Low",
+                "medium": "Medium",
+                "hard": "High"
+          },
+          "cycle": {
+                "defaultName": "Villain Study Cycle",
+                "title": "Study Cycle",
+                "nameTitle": "New cycle name:",
+                "namePlaceholder": "Study cycle - Exam week",
+                "totalStudyTime": "Total study time:",
+                "blockDuration": "Duration of each subject:",
+                "modalHelp": "Choose the total time and the default duration of each block.",
+                "currentSubject": "Current subject:",
+                "remainingTime": "Time left:",
+                "timeline": "Timeline",
+                "unnamedSubject": "Unnamed subject",
+                "progress": "{completed}/{total} completed"
+          },
+          "duration": {
+                "thirtyMinutes": "30 minutes",
+                "oneHour": "1 hour",
+                "ninetyMinutes": "1 hour and a half",
+                "twoHours": "2 hours"
+          },
+          "completion": {
+                "firstCycle": "Congratulations, you completed your first cycle!"
+          },
+          "deleteCycle": {
+                "title": "Are you sure you want to delete this cycle?",
+                "warning": "This action cannot be undone."
+          },
+          "tutorial": {
+                "open": "How to use",
+                "openButton": "?",
+                "skip": "Skip",
+                "back": "Back",
+                "next": "Next",
+                "finish": "Let's Study!",
+                "progress": "{current}/{total}",
+                "steps": {
+                      "welcome": {
+                            "title": "Welcome to Study Like a Villain",
+                            "text": "Build study cycles by subject, priority, and time. The app organizes your blocks so you only have to execute the plan."
+                      },
+                      "subjects": {
+                            "title": "Add your subjects",
+                            "text": "Register the subjects you need to study. Then choose each subject's priority level: low, medium, or high."
+                      },
+                      "priority": {
+                            "title": "Priority defines repetition",
+                            "text": "High-priority subjects appear more often in the cycle. Low-priority subjects appear less often."
+                      },
+                      "cycle": {
+                            "title": "Configure your cycle",
+                            "text": "When generating a cycle, choose the name, total study time, and duration of each block."
+                      },
+                      "timer": {
+                            "title": "Study until the timer ends",
+                            "text": "Start the timer and study the current subject. When time runs out, the app completes the block automatically and moves to the next subject."
+                      },
+                      "reorder": {
+                            "title": "Pause to reorganize",
+                            "text": "You can drag future blocks to change the order. If you want to move the current subject, pause the timer first."
+                      }
+                }
+          },
+          "microcopy": {
+                "noSubjects": "Add your first subject to start your cycle.",
+                "readyToGenerate": "Now generate your study cycle.",
+                "beforeStart": "Drag the blocks to adjust the order before you start.",
+                "timerRunning": "Timer in progress: focus on the current subject until the block ends.",
+                "timerPaused": "Timer paused: you can reorganize the blocks, including the current subject."
+          }
+    };
+    let currentLanguage = DEFAULT_LANGUAGE;
+    let fallbackTranslations = {};
+    let activeTranslations = {};
+    const loadedTranslations = {};
+    const loadedQuotes = {};
+    const MINIMAL_QUOTES = [{ author: "Francis Bacon", text: "Knowledge is power." }];
+    const QUOTE_STORAGE_KEY = "studyPomodoroLastQuoteIndex";
+    let PHILOSOPHER_QUOTES = MINIMAL_QUOTES;
+    const BLOCK_DURATION_SECONDS = 60 * 60;
+    const ALLOWED_BLOCK_DURATIONS_SECONDS = [30 * 60, 60 * 60, 90 * 60, 2 * 60 * 60];
+
+    const DEFAULT_STATE = {
+      subjects: [],
+      savedCycles: [],
+      activeCycleId: null,
+      cycleStarted: false,
+      cycleFinished: false,
+      studyCycle: [],
+      cycleName: "",
+      totalStudyHours: 34,
+      blockDurationSeconds: BLOCK_DURATION_SECONDS,
+      currentBlockIndex: 0,
+      timeLeft: BLOCK_DURATION_SECONDS,
+      activeBlockStarted: false,
+      timerRunning: false,
+      timerSecondsLeft: BLOCK_DURATION_SECONDS,
+      timerExpectedEndAt: null,
+      timerLastSavedAt: 0,
+      completedCyclesCount: 0,
+      activeCycleCompletedCount: 0
+    };
+
+    let appState = { ...DEFAULT_STATE };
+    let pendingCycleDeleteId = null;
+    let lastRenderedCurrentBlockKey = null;
+    let timerInterval = null;
+
+    const subjectInput = document.getElementById("subject-input");
+    const addSubjectButton = document.getElementById("add-subject-button");
+    const subjectList = document.getElementById("subject-list");
+    const emptyMessage = document.getElementById("empty-message");
+    const setupMicrocopy = document.getElementById("setup-microcopy");
+    const savedCyclesList = document.getElementById("saved-cycles-list");
+    const emptyCyclesMessage = document.getElementById("empty-cycles-message");
+    const mainTitle = document.getElementById("main-title");
+    const villainQuote = document.getElementById("villain-quote");
+    const setupScreen = document.getElementById("setup-screen");
+    const cycleScreen = document.getElementById("cycle-screen");
+    const generateCycleButton = document.getElementById("generate-cycle-button");
+    const currentCard = document.querySelector(".current-card");
+    const currentSubject = document.getElementById("current-subject");
+    const timerCard = document.getElementById("timer-card");
+    const timerDisplay = document.getElementById("timer-display");
+    const timelineList = document.getElementById("timeline-list");
+    const playButton = document.getElementById("play-button");
+    const pauseButton = document.getElementById("pause-button");
+    const backButton = document.getElementById("back-button");
+    const bottomBackButton = document.getElementById("bottom-back-button");
+    const completedCounter = document.getElementById("completed-counter");
+    const completedCounterText = document.getElementById("completed-counter-text");
+    const cycleRunningScreen = document.getElementById("cycle-running-screen");
+    const cycleCompletionScreen = document.getElementById("cycle-completion-screen");
+    const completionMessage = document.getElementById("completion-message");
+    const completionBackButton = document.getElementById("completion-back-button");
+    const deleteCycleModal = document.getElementById("delete-cycle-modal");
+    const cancelDeleteCycleButton = document.getElementById("cancel-delete-cycle-button");
+    const confirmDeleteCycleButton = document.getElementById("confirm-delete-cycle-button");
+    const cycleNameModal = document.getElementById("cycle-name-modal");
+    const cycleNameInput = document.getElementById("cycle-name-input");
+    const cycleHoursInput = document.getElementById("cycle-hours-input");
+    const cycleMinutesInput = document.getElementById("cycle-minutes-input");
+    const blockDurationInput = document.getElementById("block-duration-input");
+    const cancelCycleNameButton = document.getElementById("cancel-cycle-name-button");
+    const confirmCycleNameButton = document.getElementById("confirm-cycle-name-button");
+    const cycleTitle = document.getElementById("cycle-title");
+    const cycleSubtitle = document.querySelector(".cycle-subtitle");
+    const cycleMicrocopy = document.getElementById("cycle-microcopy");
+    const languageSelect = document.getElementById("language-select");
+    const tutorialOpenButton = document.getElementById("tutorial-open-button");
+    const tutorialModal = document.getElementById("tutorial-modal");
+    const tutorialTitle = document.getElementById("tutorial-title");
+    const tutorialText = document.getElementById("tutorial-text");
+    const tutorialProgress = document.getElementById("tutorial-progress");
+    const tutorialBackButton = document.getElementById("tutorial-back-button");
+    const tutorialNextButton = document.getElementById("tutorial-next-button");
+    const tutorialSkipButton = document.getElementById("tutorial-skip-button");
+    const tutorialDots = document.querySelectorAll(".tutorial-dot");
+    let currentTutorialStep = 0;
+    const tutorialStepKeys = [
+      "tutorial.steps.welcome",
+      "tutorial.steps.subjects",
+      "tutorial.steps.priority",
+      "tutorial.steps.cycle",
+      "tutorial.steps.timer",
+      "tutorial.steps.reorder"
+    ];
+
+
+    function getTranslationValue(source, key) {
+      return String(key).split(".").reduce((value, part) => {
+        return value && Object.prototype.hasOwnProperty.call(value, part) ? value[part] : undefined;
+      }, source);
+    }
+
+    function mergeTranslations(base, override) {
+      if (!base || typeof base !== "object" || Array.isArray(base)) {
+        return override;
+      }
+
+      if (!override || typeof override !== "object" || Array.isArray(override)) {
+        return base;
+      }
+
+      const merged = { ...base };
+
+      Object.keys(override).forEach(key => {
+        merged[key] = mergeTranslations(base[key], override[key]);
+      });
+
+      return merged;
+    }
+
+    function interpolateTranslation(value, params = {}) {
+      if (typeof value !== "string") {
+        return value;
+      }
+
+      return value.replace(/\{(\w+)\}/g, (match, paramName) => {
+        return Object.prototype.hasOwnProperty.call(params, paramName) ? String(params[paramName]) : match;
+      });
+    }
+
+    function t(key, params = {}) {
+      const translatedValue = getTranslationValue(activeTranslations, key);
+      const fallbackValue = getTranslationValue(fallbackTranslations, key);
+      const value = translatedValue !== undefined ? translatedValue : fallbackValue;
+
+      if (value === undefined) {
+        return key;
+      }
+
+      return interpolateTranslation(value, params);
+    }
+
+    function getCurrentLanguage() {
+      return currentLanguage;
+    }
+
+    function getSupportedLanguage(lang) {
+      const normalizedLang = String(lang || "").trim().toLowerCase();
+
+      if (normalizedLang.startsWith("pt")) {
+        return "pt-BR";
+      }
+
+      if (normalizedLang.startsWith("es")) {
+        return "es";
+      }
+
+      if (normalizedLang.startsWith("fr")) {
+        return "fr";
+      }
+
+      if (normalizedLang.startsWith("de")) {
+        return "de";
+      }
+
+      if (normalizedLang.startsWith("it")) {
+        return "it";
+      }
+
+      if (normalizedLang.startsWith("ja") || normalizedLang.startsWith("jp")) {
+        return "ja";
+      }
+
+      if (normalizedLang.startsWith("en")) {
+        return "en";
+      }
+
+      return DEFAULT_LANGUAGE;
+    }
+
+    function getSavedLanguagePreference() {
+      let savedLanguage = "";
+
+      try {
+        savedLanguage = localStorage.getItem(I18N_STORAGE_KEY) || "";
+      } catch (error) {
+        savedLanguage = "";
+      }
+
+      if (!savedLanguage) {
+        return null;
+      }
+
+      return SUPPORTED_LANGUAGES.includes(savedLanguage) ? savedLanguage : null;
+    }
+
+    function getUrlLanguagePreference() {
+      const searchParams = new URLSearchParams(window.location.search);
+      const requestedLanguage = String(searchParams.get("lang") || "").trim().toLowerCase();
+      const supportedUrlLanguages = {
+        "pt-br": "pt-BR",
+        en: "en",
+        es: "es",
+        fr: "fr",
+        de: "de",
+        it: "it",
+        ja: "ja"
+      };
+
+      return supportedUrlLanguages[requestedLanguage] || null;
+    }
+
+    function getBrowserLanguagePreference() {
+      const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length > 0
+        ? navigator.languages
+        : [navigator.language || navigator.userLanguage || ""];
+      const normalizedLanguages = browserLanguages.map(language => String(language || "").trim().toLowerCase());
+
+      if (normalizedLanguages.some(language => language.startsWith("pt"))) {
+        return "pt-BR";
+      }
+
+      if (normalizedLanguages.some(language => language.startsWith("es"))) {
+        return "es";
+      }
+
+      if (normalizedLanguages.some(language => language.startsWith("fr"))) {
+        return "fr";
+      }
+
+      if (normalizedLanguages.some(language => language.startsWith("de"))) {
+        return "de";
+      }
+
+      if (normalizedLanguages.some(language => language.startsWith("it"))) {
+        return "it";
+      }
+
+      if (normalizedLanguages.some(language => language.startsWith("ja") || language.startsWith("jp"))) {
+        return "ja";
+      }
+
+      if (normalizedLanguages.some(language => language.startsWith("en"))) {
+        return "en";
+      }
+
+      return DEFAULT_LANGUAGE;
+    }
+
+    function getInitialLanguage() {
+      return getUrlLanguagePreference() || getSavedLanguagePreference() || getBrowserLanguagePreference() || DEFAULT_LANGUAGE;
+    }
+
+    async function loadLanguageFile(lang) {
+      const language = getSupportedLanguage(lang);
+
+      if (loadedTranslations[language]) {
+        return loadedTranslations[language];
+      }
+
+      const languagePath = LANGUAGE_FILES[language];
+      const languageUrl = new URL(languagePath, document.baseURI).href;
+
+      try {
+        const response = await fetch(languageUrl, { cache: "no-store" });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const translations = await response.json();
+        loadedTranslations[language] = translations;
+
+        return translations;
+      } catch (error) {
+        console.warn(`Could not load language file for ${language} from ${languagePath}.`, error);
+        throw error;
+      }
+    }
+
+    async function loadQuotesFile(lang) {
+      const language = getSupportedLanguage(lang);
+
+      if (loadedQuotes[language]) {
+        return loadedQuotes[language];
+      }
+
+      const quotesPath = QUOTE_FILES[language];
+      const quotesUrl = new URL(quotesPath, document.baseURI).href;
+
+      try {
+        const response = await fetch(quotesUrl, { cache: "no-store" });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const quotes = await response.json();
+
+        if (!Array.isArray(quotes)) {
+          throw new Error("Quotes file must contain a JSON array.");
+        }
+
+        loadedQuotes[language] = quotes;
+        return quotes;
+      } catch (error) {
+        console.warn(`Could not load quotes file for ${language} from ${quotesPath}.`, error);
+        throw error;
+      }
+    }
+
+    async function loadQuotesForLanguage(lang) {
+      const language = getSupportedLanguage(lang);
+
+      try {
+        return await loadQuotesFile(language);
+      } catch (error) {
+        if (language !== DEFAULT_LANGUAGE) {
+          try {
+            return await loadQuotesFile(DEFAULT_LANGUAGE);
+          } catch (fallbackError) {
+            return MINIMAL_QUOTES;
+          }
+        }
+
+        return MINIMAL_QUOTES;
+      }
+    }
+
+    function applyTranslations() {
+      document.documentElement.lang = currentLanguage;
+
+      document.querySelectorAll("[data-i18n]").forEach(element => {
+        const value = t(element.dataset.i18n);
+
+        if (Array.isArray(value) || typeof value === "object") {
+          return;
+        }
+
+        element.textContent = value;
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+        element.setAttribute("placeholder", t(element.dataset.i18nPlaceholder));
+      });
+
+      document.querySelectorAll("[data-i18n-title]").forEach(element => {
+        element.setAttribute("title", t(element.dataset.i18nTitle));
+      });
+
+      document.querySelectorAll("[data-i18n-aria-label]").forEach(element => {
+        element.setAttribute("aria-label", t(element.dataset.i18nAriaLabel));
+      });
+
+
+      if (languageSelect) {
+        languageSelect.value = currentLanguage;
+      }
+
+      if (!tutorialModal.classList.contains("hidden")) {
+        renderTutorialStep();
+      }
+    }
+
+    function hasSeenTutorial() {
+      try {
+        return localStorage.getItem(TUTORIAL_STORAGE_KEY) === "true";
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function markTutorialSeen() {
+      try {
+        localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+      } catch (error) {
+        console.warn("Could not save tutorial status.", error);
+      }
+    }
+
+    function renderTutorialStep() {
+      const totalSteps = tutorialStepKeys.length;
+      const stepKey = tutorialStepKeys[currentTutorialStep];
+      const isFirstStep = currentTutorialStep === 0;
+      const isLastStep = currentTutorialStep === totalSteps - 1;
+
+      tutorialTitle.textContent = t(`${stepKey}.title`);
+      tutorialText.textContent = t(`${stepKey}.text`);
+      tutorialProgress.textContent = t("tutorial.progress", { current: currentTutorialStep + 1, total: totalSteps });
+      tutorialBackButton.disabled = isFirstStep;
+      tutorialNextButton.textContent = isLastStep ? t("tutorial.finish") : t("tutorial.next");
+
+      tutorialDots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentTutorialStep);
+        dot.classList.toggle("completed", index < currentTutorialStep);
+      });
+    }
+
+    function openTutorial() {
+      currentTutorialStep = 0;
+      renderTutorialStep();
+      tutorialModal.classList.remove("hidden");
+      tutorialModal.focus();
+    }
+
+    function closeTutorial(options = {}) {
+      tutorialModal.classList.add("hidden");
+
+      if (options.markSeen) {
+        markTutorialSeen();
+      }
+
+      tutorialOpenButton.focus();
+    }
+
+    function showTutorialOnFirstVisit() {
+      if (!hasSeenTutorial()) {
+        openTutorial();
+      }
+    }
+
+    function goToNextTutorialStep() {
+      if (currentTutorialStep >= tutorialStepKeys.length - 1) {
+        closeTutorial({ markSeen: true });
+        return;
+      }
+
+      currentTutorialStep += 1;
+      renderTutorialStep();
+    }
+
+    function goToPreviousTutorialStep() {
+      if (currentTutorialStep <= 0) {
+        return;
+      }
+
+      currentTutorialStep -= 1;
+      renderTutorialStep();
+    }
+
+    async function setLanguage(lang, options = {}) {
+      const requestedLanguage = getSupportedLanguage(lang);
+      let nextTranslations = loadedTranslations[requestedLanguage];
+      let nextQuotes = loadedQuotes[requestedLanguage];
+
+      try {
+        nextTranslations = mergeTranslations(fallbackTranslations || MINIMAL_EN_TRANSLATIONS, await loadLanguageFile(requestedLanguage));
+      } catch (error) {
+        nextTranslations = loadedTranslations[requestedLanguage] || fallbackTranslations || MINIMAL_EN_TRANSLATIONS;
+      }
+
+      nextQuotes = await loadQuotesForLanguage(requestedLanguage);
+
+      currentLanguage = requestedLanguage;
+      activeTranslations = nextTranslations || fallbackTranslations || MINIMAL_EN_TRANSLATIONS;
+      PHILOSOPHER_QUOTES = Array.isArray(nextQuotes) && nextQuotes.length > 0 ? nextQuotes : MINIMAL_QUOTES;
+
+      if (options.manual) {
+        try {
+          localStorage.setItem(I18N_STORAGE_KEY, currentLanguage);
+        } catch (error) {
+          console.warn("Could not save the selected language.", error);
+        }
+      }
+
+      applyTranslations();
+      renderApp();
+    }
+
+    async function initializeI18n() {
+      fallbackTranslations = MINIMAL_EN_TRANSLATIONS;
+      activeTranslations = fallbackTranslations;
+
+      try {
+        fallbackTranslations = mergeTranslations(MINIMAL_EN_TRANSLATIONS, await loadLanguageFile(DEFAULT_LANGUAGE));
+        loadedTranslations[DEFAULT_LANGUAGE] = fallbackTranslations;
+      } catch (error) {
+        fallbackTranslations = MINIMAL_EN_TRANSLATIONS;
+      }
+
+      activeTranslations = fallbackTranslations;
+      await setLanguage(getInitialLanguage());
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (error) {
+        console.warn(t("errors.saveState"), error);
+      }
+    }
+
+    function safeSetStorageItem(key, value) {
+      try {
+        localStorage.setItem(key, value);
+      } catch (error) {
+        console.warn(t("errors.saveStorage", { key }), error);
+      }
+    }
+
+    function safeRemoveStorageItem(key) {
+      try {
+        localStorage.removeItem(key);
+      } catch (error) {
+        console.warn(t("errors.removeStorage", { key }), error);
+      }
+    }
+
+    function safeReadJson(key, fallbackValue) {
+      let rawValue = null;
+
+      try {
+        rawValue = localStorage.getItem(key);
+      } catch (error) {
+        console.warn(t("errors.readStorage", { key }), error);
+        return fallbackValue;
+      }
+
+      if (!rawValue) {
+        return fallbackValue;
+      }
+
+      try {
+        return JSON.parse(rawValue);
+      } catch (error) {
+        console.warn(`Estado salvo em ${key} estava invÃ¡lido e foi ignorado.`, error);
+        safeRemoveStorageItem(key);
+        return fallbackValue;
+      }
+    }
+
+    function clampNumber(value, min, max, fallbackValue) {
+      const number = Number(value);
+
+      if (!Number.isFinite(number)) {
+        return fallbackValue;
+      }
+
+      return Math.min(max, Math.max(min, number));
+    }
+
+    function normalizeDifficulty(value) {
+      const normalizedValue = String(value || "").toLowerCase();
+      const aliases = {
+        easy: "facil",
+        medium: "medio",
+        hard: "dificil"
+      };
+      const difficulty = aliases[normalizedValue] || normalizedValue;
+
+      return ["facil", "medio", "dificil"].includes(difficulty) ? difficulty : "medio";
+    }
+
+    function getDifficultyLabel(value) {
+      const labels = {
+        facil: t("difficulty.easy"),
+        medio: t("difficulty.medium"),
+        dificil: t("difficulty.hard")
+      };
+
+      return labels[normalizeDifficulty(value)] || labels.medio;
+    }
+
+    function normalizeBlockDurationSeconds(value) {
+      const duration = Number(value);
+
+      if (ALLOWED_BLOCK_DURATIONS_SECONDS.includes(duration)) {
+        return duration;
+      }
+
+      return BLOCK_DURATION_SECONDS;
+    }
+
+    function clampTimerSeconds(value, fallbackDuration) {
+      const duration = normalizeBlockDurationSeconds(fallbackDuration || BLOCK_DURATION_SECONDS);
+      const seconds = Number(value);
+
+      if (!Number.isFinite(seconds)) {
+        return duration;
+      }
+
+      return Math.min(duration, Math.max(0, Math.floor(seconds)));
+    }
+
+    function getCurrentBlockDurationSeconds() {
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+      return normalizeBlockDurationSeconds(
+        currentBlock?.duration ||
+        appState.blockDurationSeconds ||
+        BLOCK_DURATION_SECONDS
+      );
+    }
+
+    function getStoredBlockRemainingSeconds(block) {
+      if (!block) {
+        return null;
+      }
+
+      const duration = normalizeBlockDurationSeconds(block.duration || appState.blockDurationSeconds || BLOCK_DURATION_SECONDS);
+      const remainingSeconds = Number(block.remainingSeconds);
+
+      if (!Number.isFinite(remainingSeconds)) {
+        return null;
+      }
+
+      return clampTimerSeconds(remainingSeconds, duration);
+    }
+
+    function getBlockResumeSeconds(block) {
+      const storedRemainingSeconds = getStoredBlockRemainingSeconds(block);
+
+      if (storedRemainingSeconds !== null) {
+        return storedRemainingSeconds;
+      }
+
+      return normalizeBlockDurationSeconds(block?.duration || appState.blockDurationSeconds || BLOCK_DURATION_SECONDS);
+    }
+
+    function currentBlockCanBeReordered() {
+      return Boolean(
+        appState.cycleStarted &&
+        !appState.cycleFinished &&
+        appState.activeBlockStarted &&
+        !appState.timerRunning &&
+        appState.studyCycle[appState.currentBlockIndex]
+      );
+    }
+
+    function storePausedCurrentBlockTime() {
+      if (!currentBlockCanBeReordered()) {
+        return;
+      }
+
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+      currentBlock.remainingSeconds = clampTimerSeconds(appState.timerSecondsLeft, getCurrentBlockDurationSeconds());
+    }
+
+    function syncCurrentTimerFromBlock() {
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+
+      if (!currentBlock) {
+        return;
+      }
+
+      const duration = normalizeBlockDurationSeconds(currentBlock.duration || appState.blockDurationSeconds || BLOCK_DURATION_SECONDS);
+      const remainingSeconds = getStoredBlockRemainingSeconds(currentBlock);
+
+      appState.timerSecondsLeft = remainingSeconds !== null ? remainingSeconds : duration;
+      appState.timeLeft = appState.timerSecondsLeft;
+      appState.activeBlockStarted = remainingSeconds !== null;
+    }
+
+    function formatDurationLabel(totalSeconds) {
+      const safeSeconds = normalizeBlockDurationSeconds(totalSeconds);
+      const hours = Math.floor(safeSeconds / 3600);
+      const minutes = Math.round((safeSeconds % 3600) / 60);
+
+      if (hours > 0 && minutes > 0) {
+        return `${hours}${t("duration.hourShort")}${minutes}`;
+      }
+
+      if (hours > 0) {
+        return `${hours}${t("duration.hourShort")}`;
+      }
+
+      return `${minutes}${t("duration.minuteShort")}`;
+    }
+
+    function formatTotalStudyHours(totalHours) {
+      const hoursAsNumber = Number(totalHours) || 0;
+      const wholeHours = Math.floor(hoursAsNumber);
+      const minutes = Math.round((hoursAsNumber - wholeHours) * 60);
+
+      if (minutes > 0) {
+        return `${wholeHours}${t("duration.hourShort")}${String(minutes).padStart(2, "0")}`;
+      }
+
+      return `${wholeHours}${t("duration.hourShort")}`;
+    }
+
+    function stripNonDigits(value) {
+      return String(value || "").replace(/\D/g, "");
+    }
+
+    function normalizeCycleHoursInput() {
+      const digitsOnly = stripNonDigits(cycleHoursInput.value);
+
+      if (digitsOnly === "") {
+        cycleHoursInput.value = "";
+        return 0;
+      }
+
+      const hours = Math.floor(clampNumber(digitsOnly, 0, 200, 0));
+
+      cycleHoursInput.value = String(hours);
+
+      return hours;
+    }
+
+    function readTotalStudyHoursFromInputs() {
+      const hours = normalizeCycleHoursInput();
+      const minutes = normalizeCycleMinutesInput();
+
+      return hours + (minutes / 60);
+    }
+
+    function normalizeCycleMinutesInput() {
+      const digitsOnly = stripNonDigits(cycleMinutesInput.value);
+
+      if (digitsOnly === "") {
+        cycleMinutesInput.value = "";
+        return 0;
+      }
+
+      const rawMinutes = Math.floor(clampNumber(digitsOnly, 0, 30, 0));
+      const minutes = rawMinutes >= 15 ? 30 : 0;
+
+      cycleMinutesInput.value = String(minutes);
+
+      return minutes;
+    }
+
+    function writeTotalStudyHoursToInputs(totalHours) {
+      const safeHours = Math.max(0, Number(totalHours) || 0);
+      let hours = Math.floor(safeHours);
+      let minutes = Math.round((safeHours - hours) * 60);
+
+      if (minutes >= 60) {
+        hours++;
+        minutes = 0;
+      }
+
+      minutes = minutes >= 15 ? 30 : 0;
+
+      cycleHoursInput.value = String(hours);
+      cycleMinutesInput.value = String(minutes);
+    }
+
+    function getCycleBlockDurationSeconds(cycle) {
+      return normalizeBlockDurationSeconds(cycle?.blockDurationSeconds || cycle?.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS);
+    }
+
+    function getCycleTotalHours(cycle) {
+      const studyCycle = Array.isArray(cycle?.studyCycle) ? cycle.studyCycle : [];
+      const savedHours = Number(cycle?.totalStudyHours);
+
+      if (Number.isFinite(savedHours) && savedHours > 0) {
+        return savedHours;
+      }
+
+      return (studyCycle.length * getCycleBlockDurationSeconds(cycle)) / 3600;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function loadState() {
+      const savedState = safeReadJson(STORAGE_KEY, null);
+
+      if (savedState) {
+        appState = {
+          ...DEFAULT_STATE,
+          ...savedState
+        };
+      }
+
+      if (!Array.isArray(appState.subjects)) {
+        appState.subjects = [];
+      }
+
+      if (!Array.isArray(appState.savedCycles)) {
+        appState.savedCycles = [];
+      }
+
+      if (!Array.isArray(appState.studyCycle)) {
+        appState.studyCycle = [];
+      }
+
+      appState.subjects = appState.subjects
+        .map(subject => ({
+          name: String((subject && subject.name) || "").trim(),
+          difficulty: normalizeDifficulty(subject && subject.difficulty)
+        }))
+        .filter(subject => subject.name !== "");
+
+      appState.blockDurationSeconds = normalizeBlockDurationSeconds(appState.blockDurationSeconds || appState.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS);
+      appState.studyCycle = appState.studyCycle.map(block => ({
+        ...block,
+        duration: normalizeBlockDurationSeconds(block.duration || appState.blockDurationSeconds),
+        remainingSeconds: block?.completed ? undefined : getStoredBlockRemainingSeconds(block) ?? undefined
+      }));
+      appState.savedCycles = appState.savedCycles.map(cycle => {
+        const cycleBlockDuration = normalizeBlockDurationSeconds(cycle.blockDurationSeconds || cycle.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS);
+
+        return {
+          ...cycle,
+          blockDurationSeconds: cycleBlockDuration,
+          studyCycle: Array.isArray(cycle.studyCycle)
+            ? cycle.studyCycle.map(block => ({
+                ...block,
+                duration: normalizeBlockDurationSeconds(block.duration || cycleBlockDuration),
+                remainingSeconds: block?.completed ? undefined : getStoredBlockRemainingSeconds(block) ?? undefined
+              }))
+            : []
+        };
+      });
+
+      appState.completedCyclesCount = appState.completedCyclesCount || 0;
+      appState.activeCycleCompletedCount = appState.activeCycleCompletedCount || 0;
+      appState.currentBlockIndex = Math.min(
+        Math.max(Number(appState.currentBlockIndex) || 0, 0),
+        Math.max(appState.studyCycle.length - 1, 0)
+      );
+      appState.timerRunning = false;
+      appState.timerExpectedEndAt = null;
+      appState.timerSecondsLeft = clampTimerSeconds(appState.timerSecondsLeft, getCurrentBlockDurationSeconds());
+
+      const storedCurrentRemainingSeconds = getStoredBlockRemainingSeconds(appState.studyCycle[appState.currentBlockIndex]);
+
+      if (storedCurrentRemainingSeconds !== null) {
+        appState.timerSecondsLeft = storedCurrentRemainingSeconds;
+        appState.activeBlockStarted = true;
+      }
+    }
+
+    function renderRandomVillainQuote() {
+      if (!villainQuote || PHILOSOPHER_QUOTES.length === 0) {
+        return;
+      }
+
+      let lastQuoteIndex = -1;
+
+      try {
+        lastQuoteIndex = Number(sessionStorage.getItem(QUOTE_STORAGE_KEY));
+      } catch (error) {
+        lastQuoteIndex = -1;
+      }
+
+      let nextQuoteIndex = Math.floor(Math.random() * PHILOSOPHER_QUOTES.length);
+
+      if (PHILOSOPHER_QUOTES.length > 1 && nextQuoteIndex === lastQuoteIndex) {
+        nextQuoteIndex = (nextQuoteIndex + 1) % PHILOSOPHER_QUOTES.length;
+      }
+
+      const quote = PHILOSOPHER_QUOTES[nextQuoteIndex];
+      const quoteLabel = `â€œ${quote.text}â€ - ${quote.author}`;
+
+      villainQuote.classList.toggle("long-quote", quoteLabel.length > 88);
+      villainQuote.classList.toggle("very-long-quote", quoteLabel.length > 108);
+      villainQuote.classList.toggle("ultra-long-quote", quoteLabel.length > 116);
+      villainQuote.textContent = quoteLabel;
+      villainQuote.title = quoteLabel;
+
+      try {
+        sessionStorage.setItem(QUOTE_STORAGE_KEY, String(nextQuoteIndex));
+      } catch (error) {
+        // The quote still rotates; only the previous index is not stored.
+      }
+    }
+
+    function showSetupScreen() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      deleteCycleModal.classList.add("hidden");
+      cycleNameModal.classList.add("hidden");
+      mainTitle.classList.remove("hidden");
+      setupScreen.classList.remove("hidden");
+      cycleScreen.classList.add("hidden");
+      renderRandomVillainQuote();
+      renderSavedCycles();
+    }
+
+    function showCycleScreen() {
+      deleteCycleModal.classList.add("hidden");
+      cycleNameModal.classList.add("hidden");
+      mainTitle.classList.add("hidden");
+      setupScreen.classList.add("hidden");
+      cycleScreen.classList.remove("hidden");
+      lastRenderedCurrentBlockKey = null;
+      renderCycle();
+    }
+
+    function renderApp() {
+      if (appState.activeCycleId && appState.studyCycle.length > 0) {
+        showCycleScreen();
+      } else {
+        showSetupScreen();
+        renderSubjects();
+        renderSavedCycles();
+      }
+    }
+
+    function renderSetupMicrocopy() {
+      if (appState.subjects.length === 0) {
+        setupMicrocopy.textContent = t("microcopy.noSubjects");
+        return;
+      }
+
+      setupMicrocopy.textContent = t("microcopy.readyToGenerate");
+    }
+
+    function renderCycleMicrocopy() {
+      if (!appState.cycleStarted || appState.cycleFinished || !appState.studyCycle[appState.currentBlockIndex]) {
+        cycleMicrocopy.textContent = "";
+        cycleMicrocopy.classList.add("hidden");
+        return;
+      }
+
+      cycleMicrocopy.classList.remove("hidden");
+
+      if (appState.timerRunning) {
+        cycleMicrocopy.textContent = t("microcopy.timerRunning");
+        return;
+      }
+
+      if (appState.activeBlockStarted) {
+        cycleMicrocopy.textContent = t("microcopy.timerPaused");
+        return;
+      }
+
+      cycleMicrocopy.textContent = t("microcopy.beforeStart");
+    }
+
+    function renderSubjects() {
+      subjectList.innerHTML = "";
+
+      if (appState.subjects.length === 0) {
+        emptyMessage.style.display = "block";
+        generateCycleButton.disabled = true;
+      } else {
+        emptyMessage.style.display = "none";
+          generateCycleButton.disabled = false;
+      }
+
+      renderSetupMicrocopy();
+
+      appState.subjects.forEach((subject, index) => {
+        const li = document.createElement("li");
+        const difficulty = normalizeDifficulty(subject.difficulty);
+        const difficultyLabel = getDifficultyLabel(difficulty);
+
+        li.dataset.index = index;
+        li.draggable = false;
+
+        li.innerHTML = `
+          <span class="subject-name drag-area">${escapeHtml(subject.name)}</span>
+
+          <div class="subject-actions">
+            <span class="priority-label">${t("difficulty.label")}</span>
+            <div class="priority-menu" data-index="${index}">
+              <button type="button" class="priority-menu-button ${difficulty}" aria-haspopup="listbox" aria-expanded="false">
+                ${difficultyLabel}
+              </button>
+
+              <div class="priority-options" role="listbox" aria-label="${t("difficulty.ariaLabel")}">
+                <button type="button" class="priority-option facil ${difficulty === "facil" ? "selected" : ""}" data-value="facil" role="option">${t("difficulty.easy")}</button>
+                <button type="button" class="priority-option medio ${difficulty === "medio" ? "selected" : ""}" data-value="medio" role="option">${t("difficulty.medium")}</button>
+                <button type="button" class="priority-option dificil ${difficulty === "dificil" ? "selected" : ""}" data-value="dificil" role="option">${t("difficulty.hard")}</button>
+              </div>
+            </div>
+
+            <button class="delete-button" data-index="${index}">
+              ${t("actions.delete")}
+            </button>
+          </div>
+        `;
+
+        subjectList.appendChild(li);
+      });
+
+      const priorityMenus = document.querySelectorAll("#subject-list .priority-menu");
+
+      priorityMenus.forEach(menu => {
+        const trigger = menu.querySelector(".priority-menu-button");
+        const options = menu.querySelectorAll(".priority-option");
+
+        trigger.addEventListener("click", function () {
+          const willOpen = !menu.classList.contains("open");
+
+          document.querySelectorAll("#subject-list .priority-menu.open").forEach(openMenu => {
+            openMenu.classList.remove("open");
+            openMenu.closest("li")?.classList.remove("priority-dropdown-open");
+            openMenu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
+          });
+
+          menu.classList.toggle("open", willOpen);
+          menu.closest("li")?.classList.toggle("priority-dropdown-open", willOpen);
+          trigger.setAttribute("aria-expanded", String(willOpen));
+        });
+
+        options.forEach(option => {
+          option.addEventListener("click", function () {
+            const index = Number(menu.dataset.index);
+
+            if (appState.subjects[index]) {
+              appState.subjects[index].difficulty = normalizeDifficulty(this.dataset.value);
+            }
+
+            saveState();
+            renderSubjects();
+          });
+        });
+      });
+
+      const deleteButtons = document.querySelectorAll("#subject-list .delete-button");
+
+      deleteButtons.forEach(button => {
+        button.addEventListener("click", function () {
+          const index = Number(this.dataset.index);
+          deleteSubject(index);
+        });
+      });
+
+      enableSubjectDragAndDrop();
+    }
+
+    function addSubject() {
+      const subjectName = subjectInput.value.trim();
+
+      if (subjectName === "") {
+        return;
+      }
+
+      const alreadyExists = appState.subjects.some(subject => {
+        return String(subject.name || "").trim().toLowerCase() === subjectName.toLowerCase();
+      });
+
+      if (alreadyExists) {
+        subjectInput.value = "";
+        return;
+      }
+
+      appState.subjects.push({
+        name: subjectName,
+        difficulty: "medio"
+      });
+
+      subjectInput.value = "";
+
+      saveState();
+      renderSubjects();
+    }
+
+    function deleteSubject(index) {
+      if (!Number.isInteger(index) || index < 0 || index >= appState.subjects.length) {
+        return;
+      }
+
+      appState.subjects.splice(index, 1);
+
+      saveState();
+      renderSubjects();
+    }
+
+    function moveItem(array, fromIndex, toIndex) {
+      if (
+        !Array.isArray(array) ||
+        fromIndex === toIndex ||
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= array.length ||
+        toIndex >= array.length
+      ) {
+        return;
+      }
+
+      const [movedItem] = array.splice(fromIndex, 1);
+      array.splice(toIndex, 0, movedItem);
+    }
+
+    function clearDragOverStyles() {
+      document.querySelectorAll(".drag-over").forEach(element => {
+        element.classList.remove("drag-over");
+      });
+    }
+
+    function enableSubjectDragAndDrop() {
+      const items = subjectList.querySelectorAll("li");
+      let draggedIndex = null;
+
+      items.forEach(item => {
+        item.addEventListener("mousedown", event => {
+          const clickedInteractiveElement =
+            event.target.closest("button") ||
+            event.target.closest("select") ||
+            event.target.closest(".priority-menu");
+
+          if (clickedInteractiveElement || !event.target.closest(".drag-area")) {
+            item.draggable = false;
+            return;
+          }
+
+          item.draggable = true;
+        });
+
+        item.addEventListener("dragstart", event => {
+          const clickedInteractiveElement =
+            event.target.closest("button") ||
+            event.target.closest("select");
+
+          if (clickedInteractiveElement) {
+            event.preventDefault();
+            return;
+          }
+
+          draggedIndex = Number(item.dataset.index);
+          item.classList.add("dragging");
+        });
+
+        item.addEventListener("dragover", event => {
+          event.preventDefault();
+          item.classList.add("drag-over");
+        });
+
+        item.addEventListener("dragleave", () => {
+          item.classList.remove("drag-over");
+        });
+
+        item.addEventListener("drop", event => {
+          event.preventDefault();
+
+          const targetIndex = Number(item.dataset.index);
+          clearDragOverStyles();
+
+          if (draggedIndex !== null && draggedIndex !== targetIndex) {
+            moveItem(appState.subjects, draggedIndex, targetIndex);
+            saveState();
+            renderSubjects();
+          }
+        });
+
+        item.addEventListener("dragend", () => {
+          item.classList.remove("dragging");
+          item.draggable = false;
+          draggedIndex = null;
+          clearDragOverStyles();
+        });
+      });
+    }
+
+    function createCycleId() {
+      return "cycle-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+    }
+
+    function countCompletedBlocks(cycle) {
+      if (!Array.isArray(cycle)) {
+        return 0;
+      }
+
+      return cycle.filter(block => block.completed).length;
+    }
+
+    function getCycleProgressText(cycle) {
+      const blocks = Array.isArray(cycle) ? cycle : [];
+      const completed = countCompletedBlocks(blocks);
+      return t("cycle.savedProgress", { completed, total: blocks.length });
+    }
+
+    function getCurrentCycleSnapshot() {
+      return {
+        id: appState.activeCycleId,
+        name: appState.cycleName,
+        totalStudyHours: appState.totalStudyHours || 34,
+        blockDurationSeconds: normalizeBlockDurationSeconds(appState.blockDurationSeconds || appState.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS),
+        studyCycle: appState.studyCycle.map(block => ({ ...block })),
+        currentBlockIndex: appState.currentBlockIndex,
+        timeLeft: appState.timeLeft,
+        cycleStarted: appState.cycleStarted,
+        cycleFinished: appState.cycleFinished,
+        activeBlockStarted: appState.activeBlockStarted,
+        timerRunning: false,
+        timerSecondsLeft: appState.timerSecondsLeft || getCurrentBlockDurationSeconds(),
+        timerExpectedEndAt: null,
+        timerLastSavedAt: 0,
+        completedCount: appState.activeCycleCompletedCount || 0,
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function saveActiveCycleSnapshot() {
+      if (!appState.activeCycleId) {
+        return;
+      }
+
+      const snapshot = getCurrentCycleSnapshot();
+      const existingIndex = appState.savedCycles.findIndex(cycle => cycle.id === snapshot.id);
+
+      if (existingIndex >= 0) {
+        appState.savedCycles[existingIndex] = snapshot;
+      } else {
+        appState.savedCycles.unshift(snapshot);
+      }
+    }
+
+    function saveResetActiveCycleSnapshot() {
+      if (!appState.activeCycleId) {
+        return;
+      }
+
+      const resetCycle = appState.studyCycle.map(block => ({
+        ...block,
+        completed: false,
+        remainingSeconds: undefined
+      }));
+
+      const snapshot = {
+        id: appState.activeCycleId,
+        name: appState.cycleName,
+        totalStudyHours: appState.totalStudyHours || 34,
+        blockDurationSeconds: normalizeBlockDurationSeconds(appState.blockDurationSeconds || appState.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS),
+        studyCycle: resetCycle,
+        currentBlockIndex: 0,
+        timeLeft: normalizeBlockDurationSeconds(appState.blockDurationSeconds || BLOCK_DURATION_SECONDS),
+        cycleStarted: true,
+        cycleFinished: false,
+        activeBlockStarted: false,
+        timerRunning: false,
+        timerSecondsLeft: normalizeBlockDurationSeconds(appState.blockDurationSeconds || BLOCK_DURATION_SECONDS),
+        timerExpectedEndAt: null,
+        timerLastSavedAt: 0,
+        completedCount: appState.activeCycleCompletedCount || 0,
+        updatedAt: new Date().toISOString()
+      };
+
+      const existingIndex = appState.savedCycles.findIndex(cycle => cycle.id === snapshot.id);
+
+      if (existingIndex >= 0) {
+        appState.savedCycles[existingIndex] = snapshot;
+      } else {
+        appState.savedCycles.unshift(snapshot);
+      }
+    }
+
+    function loadSavedCycle(cycleId) {
+      const savedCycle = appState.savedCycles.find(cycle => cycle.id === cycleId);
+
+      if (!savedCycle) {
+        return;
+      }
+
+      appState.activeCycleId = savedCycle.id;
+      appState.cycleName = savedCycle.name;
+      appState.blockDurationSeconds = normalizeBlockDurationSeconds(savedCycle.blockDurationSeconds || savedCycle.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS);
+      appState.totalStudyHours = getCycleTotalHours(savedCycle) || (((savedCycle.studyCycle?.length || 17) * appState.blockDurationSeconds) / 3600);
+      const savedStudyCycle = Array.isArray(savedCycle.studyCycle) ? savedCycle.studyCycle : [];
+
+      if (savedStudyCycle.length === 0) {
+        renderSavedCycles();
+        return;
+      }
+
+      appState.studyCycle = savedStudyCycle.map(block => ({
+        ...block,
+        difficulty: normalizeDifficulty(block.difficulty),
+        duration: normalizeBlockDurationSeconds(block.duration || appState.blockDurationSeconds),
+        remainingSeconds: block?.completed ? undefined : getStoredBlockRemainingSeconds(block) ?? undefined
+      }));
+      appState.currentBlockIndex = Math.min(
+        Math.max(Number(savedCycle.currentBlockIndex) || 0, 0),
+        Math.max(appState.studyCycle.length - 1, 0)
+      );
+      appState.timeLeft = clampTimerSeconds(savedCycle.timeLeft, appState.blockDurationSeconds) || appState.blockDurationSeconds;
+      appState.cycleStarted = true;
+      appState.cycleFinished = false;
+      appState.activeBlockStarted = Boolean(savedCycle.activeBlockStarted);
+      appState.timerRunning = false;
+      appState.timerExpectedEndAt = null;
+      appState.timerSecondsLeft = clampTimerSeconds(savedCycle.timerSecondsLeft, appState.blockDurationSeconds);
+      appState.activeCycleCompletedCount = Math.max(0, Number(savedCycle.completedCount) || 0);
+
+      const storedCurrentRemainingSeconds = getStoredBlockRemainingSeconds(appState.studyCycle[appState.currentBlockIndex]);
+
+      if (storedCurrentRemainingSeconds !== null) {
+        appState.timerSecondsLeft = storedCurrentRemainingSeconds;
+        appState.activeBlockStarted = true;
+      }
+
+      saveState();
+      showCycleScreen();
+    }
+
+    function openDeleteCycleModal(cycleId) {
+      pendingCycleDeleteId = cycleId;
+      deleteCycleModal.classList.remove("hidden");
+    }
+
+    function closeDeleteCycleModal() {
+      pendingCycleDeleteId = null;
+      deleteCycleModal.classList.add("hidden");
+    }
+
+    function confirmDeleteSavedCycle() {
+      if (!pendingCycleDeleteId) {
+        return;
+      }
+
+      deleteSavedCycle(pendingCycleDeleteId);
+      closeDeleteCycleModal();
+    }
+
+    function deleteSavedCycle(cycleId) {
+      const wasActiveCycle = appState.activeCycleId === cycleId;
+
+      appState.savedCycles = appState.savedCycles.filter(cycle => cycle.id !== cycleId);
+
+      if (wasActiveCycle) {
+        clearActiveCycle();
+      }
+
+      saveState();
+
+      if (wasActiveCycle) {
+        renderApp();
+      } else {
+        renderSavedCycles();
+      }
+    }
+
+    function normalizeSavedCycles() {
+      let changed = false;
+
+      appState.savedCycles.forEach(cycle => {
+        if (!Array.isArray(cycle.studyCycle)) {
+          cycle.studyCycle = [];
+          changed = true;
+        }
+
+        if (!cycle.id) {
+          cycle.id = createCycleId();
+          changed = true;
+        }
+
+        cycle.name = String(cycle.name || t("cycle.defaultName")).trim() || t("cycle.defaultName");
+        cycle.blockDurationSeconds = normalizeBlockDurationSeconds(cycle.blockDurationSeconds || cycle.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS);
+        cycle.studyCycle = cycle.studyCycle.map(block => ({
+          ...block,
+          subject: String((block && block.subject) || t("cycle.unnamedSubject")).trim() || t("cycle.unnamedSubject"),
+          difficulty: normalizeDifficulty(block && block.difficulty),
+          duration: normalizeBlockDurationSeconds(block && (block.duration || cycle.blockDurationSeconds)),
+          completed: Boolean(block && block.completed),
+          remainingSeconds: block?.completed ? undefined : getStoredBlockRemainingSeconds(block) ?? undefined
+        }));
+        cycle.currentBlockIndex = Math.min(
+          Math.max(Number(cycle.currentBlockIndex) || 0, 0),
+          Math.max(cycle.studyCycle.length - 1, 0)
+        );
+        cycle.timerSecondsLeft = clampTimerSeconds(cycle.timerSecondsLeft, cycle.blockDurationSeconds);
+        cycle.timeLeft = clampTimerSeconds(cycle.timeLeft, cycle.blockDurationSeconds) || cycle.blockDurationSeconds;
+        cycle.timerRunning = false;
+        cycle.timerExpectedEndAt = null;
+        cycle.completedCount = Math.max(0, Number(cycle.completedCount) || 0);
+
+        if (cycle.cycleFinished) {
+          cycle.studyCycle = cycle.studyCycle.map(block => ({
+            ...block,
+            difficulty: normalizeDifficulty(block.difficulty),
+            duration: normalizeBlockDurationSeconds(block.duration || cycle.blockDurationSeconds),
+            completed: false,
+            remainingSeconds: undefined
+          }));
+          cycle.currentBlockIndex = 0;
+          cycle.timeLeft = cycle.blockDurationSeconds;
+          cycle.cycleStarted = true;
+          cycle.cycleFinished = false;
+          cycle.activeBlockStarted = false;
+          cycle.timerRunning = false;
+          cycle.timerExpectedEndAt = null;
+          cycle.timerSecondsLeft = cycle.blockDurationSeconds;
+          changed = true;
+        }
+      });
+
+      if (changed) {
+        saveState();
+      }
+    }
+
+    function renderSavedCycles() {
+      savedCyclesList.innerHTML = "";
+      normalizeSavedCycles();
+
+      if (!appState.savedCycles || appState.savedCycles.length === 0) {
+        emptyCyclesMessage.style.display = "block";
+        return;
+      }
+
+      emptyCyclesMessage.style.display = "none";
+
+      appState.savedCycles.forEach(cycle => {
+        const li = document.createElement("li");
+        li.classList.add("saved-cycle-card");
+        li.dataset.cycleId = cycle.id;
+
+        const progress = getCycleProgressText(cycle.studyCycle);
+        const status = t("cycle.savedStatus");
+        const cycleHours = getCycleTotalHours(cycle);
+
+        li.innerHTML = `
+          <div class="saved-cycle-info">
+            <span class="saved-cycle-name">${escapeHtml(cycle.name || t("cycle.defaultName"))} <small>(${t("cycle.completedTimes", { count: cycle.completedCount || 0 })})</small></span>
+            <span class="saved-cycle-meta">${status} Â· ${formatTotalStudyHours(cycleHours)} Â· ${progress}</span>
+          </div>
+
+          <div class="saved-cycle-actions">
+            <button class="delete-button delete-cycle-button" data-cycle-id="${cycle.id}">
+              ${t("actions.delete")}
+            </button>
+          </div>
+        `;
+
+        li.addEventListener("click", function () {
+          loadSavedCycle(cycle.id);
+        });
+
+        savedCyclesList.appendChild(li);
+      });
+
+      const deleteCycleButtons = document.querySelectorAll(".delete-cycle-button");
+
+      deleteCycleButtons.forEach(button => {
+        button.addEventListener("click", function (event) {
+          event.stopPropagation();
+          openDeleteCycleModal(this.dataset.cycleId);
+        });
+      });
+    }
+
+    function getDifficultyWeight(difficulty) {
+      const weights = {
+        facil: 2,
+        medio: 3,
+        dificil: 4
+      };
+
+      return weights[difficulty] || 2;
+    }
+
+    function generateStudyCycle(totalStudyHours, blockDurationSeconds = BLOCK_DURATION_SECONDS) {
+      const normalizedBlockDuration = normalizeBlockDurationSeconds(blockDurationSeconds);
+      const totalStudySeconds = Math.max(normalizedBlockDuration, Math.round((Number(totalStudyHours) || 0) * 3600));
+      const totalBlocks = Math.max(1, Math.round(totalStudySeconds / normalizedBlockDuration));
+
+      const subjectsWithWeights = appState.subjects
+        .map(subject => ({
+          name: String(subject.name || "").trim(),
+          difficulty: normalizeDifficulty(subject.difficulty),
+          weight: getDifficultyWeight(subject.difficulty),
+          targetCount: 0,
+          remainingCount: 0,
+          remainder: 0
+        }))
+        .filter(subject => subject.name !== "");
+
+      if (subjectsWithWeights.length === 0) {
+        return [];
+      }
+
+      const totalWeight = subjectsWithWeights.reduce((sum, subject) => {
+        return sum + subject.weight;
+      }, 0);
+
+      subjectsWithWeights.forEach(subject => {
+        const exactAmount = (subject.weight / totalWeight) * totalBlocks;
+
+        subject.targetCount = Math.floor(exactAmount);
+        subject.remainingCount = subject.targetCount;
+        subject.remainder = exactAmount - subject.targetCount;
+      });
+
+      let distributedBlocks = subjectsWithWeights.reduce((sum, subject) => {
+        return sum + subject.remainingCount;
+      }, 0);
+
+      subjectsWithWeights
+        .sort((a, b) => b.remainder - a.remainder)
+        .forEach(subject => {
+          if (distributedBlocks < totalBlocks) {
+            subject.targetCount++;
+            subject.remainingCount++;
+            distributedBlocks++;
+          }
+        });
+
+      const cycle = [];
+
+      while (cycle.length < totalBlocks) {
+        const lastSubject = cycle[cycle.length - 1]?.subject;
+        const secondLastSubject = cycle[cycle.length - 2]?.subject;
+
+        let availableSubjects = subjectsWithWeights
+          .filter(subject => subject.remainingCount > 0)
+          .filter(subject => {
+            const wouldCreateThreeInARow =
+              subject.name === lastSubject &&
+              subject.name === secondLastSubject;
+
+            return !wouldCreateThreeInARow;
+          });
+
+        if (availableSubjects.length === 0) {
+          availableSubjects = subjectsWithWeights.filter(subject => subject.remainingCount > 0);
+        }
+
+        const nonRepeatedSubjects = availableSubjects.filter(subject => {
+          return subject.name !== lastSubject;
+        });
+
+        const candidatePool =
+          nonRepeatedSubjects.length > 0
+            ? nonRepeatedSubjects
+            : availableSubjects;
+
+        const selectedSubject = candidatePool
+          .sort((a, b) => {
+            if (b.remainingCount !== a.remainingCount) {
+              return b.remainingCount - a.remainingCount;
+            }
+
+            if (b.weight !== a.weight) {
+              return b.weight - a.weight;
+            }
+
+            return a.name.localeCompare(b.name);
+          })[0];
+
+        if (!selectedSubject) {
+          break;
+        }
+
+        cycle.push({
+          subject: selectedSubject.name,
+          difficulty: selectedSubject.difficulty,
+          duration: normalizedBlockDuration,
+          completed: false
+        });
+
+        selectedSubject.remainingCount--;
+      }
+
+      return cycle;
+    }
+
+    function openCycleNameModal() {
+      if (appState.subjects.length === 0) {
+        return;
+      }
+
+      cycleNameInput.value = "";
+      writeTotalStudyHoursToInputs(34);
+      blockDurationInput.value = String(BLOCK_DURATION_SECONDS);
+      cycleNameModal.classList.remove("hidden");
+      cycleNameInput.focus();
+    }
+
+    function closeCycleNameModal() {
+      cycleNameModal.classList.add("hidden");
+      cycleNameInput.value = "";
+      writeTotalStudyHoursToInputs(34);
+      blockDurationInput.value = String(BLOCK_DURATION_SECONDS);
+    }
+
+    function startCycle() {
+      if (appState.subjects.length === 0) {
+        return;
+      }
+
+      const typedName = cycleNameInput.value.trim();
+      const selectedBlockDuration = normalizeBlockDurationSeconds(blockDurationInput.value);
+      const minimumHours = selectedBlockDuration / 3600;
+      const typedHours = clampNumber(readTotalStudyHoursFromInputs(), minimumHours, 200, 34);
+      const totalBlocks = Math.max(1, Math.round((typedHours * 3600) / selectedBlockDuration));
+      const totalStudyHours = (totalBlocks * selectedBlockDuration) / 3600;
+
+      writeTotalStudyHoursToInputs(totalStudyHours);
+
+      appState.activeCycleId = createCycleId();
+      appState.cycleName = typedName || t("cycle.defaultName");
+      appState.totalStudyHours = totalStudyHours;
+      appState.blockDurationSeconds = selectedBlockDuration;
+      appState.studyCycle = generateStudyCycle(totalStudyHours, selectedBlockDuration);
+
+      if (appState.studyCycle.length === 0) {
+        closeCycleNameModal();
+        renderSubjects();
+        return;
+      }
+
+      appState.cycleStarted = true;
+      appState.cycleFinished = false;
+      appState.currentBlockIndex = 0;
+      appState.timeLeft = selectedBlockDuration;
+      appState.activeBlockStarted = false;
+      appState.timerRunning = false;
+      appState.timerSecondsLeft = selectedBlockDuration;
+      appState.timerExpectedEndAt = null;
+      appState.timerLastSavedAt = 0;
+      appState.activeCycleCompletedCount = 0;
+
+      saveActiveCycleSnapshot();
+      saveState();
+      showCycleScreen();
+    }
+
+    function blinkCurrentCard() {
+      currentCard.classList.remove("blink-current-card");
+      void currentCard.offsetWidth;
+      currentCard.classList.add("blink-current-card");
+    }
+
+    function updateCurrentCardDifficulty(block) {
+      currentCard.classList.remove("facil", "medio", "dificil");
+
+      if (block && block.difficulty) {
+        currentCard.classList.add(normalizeDifficulty(block.difficulty));
+      }
+    }
+
+    function getCompletedBlocksCount() {
+      return appState.studyCycle.filter(block => block.completed).length;
+    }
+
+    function updateCompletedCounter() {
+      const completed = getCompletedBlocksCount();
+      const total = appState.studyCycle.length;
+      const progress = total > 0 ? completed / total : 0;
+      const grayValue = 209;
+      const green = { r: 46, g: 159, b: 46 };
+      const r = Math.round(grayValue + (green.r - grayValue) * progress);
+      const g = Math.round(grayValue + (green.g - grayValue) * progress);
+      const b = Math.round(grayValue + (green.b - grayValue) * progress);
+
+      completedCounter.style.background = `rgb(${r}, ${g}, ${b})`;
+      completedCounterText.textContent = t("cycle.progress", { completed, total });
+
+      if (completed === total && total > 0) {
+        completedCounter.style.transform = "scale(1.04)";
+      } else {
+        completedCounter.style.transform = "scale(1)";
+      }
+    }
+
+    function renderCompletionScreen() {
+      const isFirstCompletedCycle = appState.completedCyclesCount <= 1;
+
+      completionMessage.textContent = isFirstCompletedCycle
+        ? t("completion.firstCycle")
+        : t("completion.anotherCycle");
+
+      cycleRunningScreen.classList.add("hidden");
+      cycleCompletionScreen.classList.remove("hidden");
+      cycleTitle.textContent = appState.cycleName || t("cycle.defaultName");
+    }
+
+    function createDigitElement(number) {
+      const activeSegmentsByNumber = {
+        "0": ["a", "b", "c", "d", "e", "f"],
+        "1": ["b", "c"],
+        "2": ["a", "b", "g", "e", "d"],
+        "3": ["a", "b", "g", "c", "d"],
+        "4": ["f", "g", "b", "c"],
+        "5": ["a", "f", "g", "c", "d"],
+        "6": ["a", "f", "g", "e", "c", "d"],
+        "7": ["a", "b", "c"],
+        "8": ["a", "b", "c", "d", "e", "f", "g"],
+        "9": ["a", "b", "c", "d", "f", "g"]
+      };
+
+      const digit = document.createElement("div");
+      digit.classList.add("digit");
+
+      const activeSegments = activeSegmentsByNumber[String(number)] || [];
+
+      ["a", "b", "c", "d", "e", "f", "g"].forEach(segmentName => {
+        const segment = document.createElement("span");
+        segment.classList.add("segment", segmentName);
+
+        if (activeSegments.includes(segmentName)) {
+          segment.classList.add("on");
+        }
+
+        digit.appendChild(segment);
+      });
+
+      return digit;
+    }
+
+    function createSeparatorElement() {
+      const separator = document.createElement("div");
+      separator.classList.add("digital-separator");
+      return separator;
+    }
+
+    function formatTimerValue(totalSeconds) {
+      const safeSeconds = Math.max(0, Number(totalSeconds) || 0);
+      const hours = Math.floor(safeSeconds / 3600);
+      const minutes = Math.floor((safeSeconds % 3600) / 60);
+      const seconds = safeSeconds % 60;
+
+      if (hours > 0) {
+        return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      }
+
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function getVisibleTimerSeconds() {
+      const secondsLeft = Number(appState.timerSecondsLeft);
+
+      if (Number.isFinite(secondsLeft)) {
+        if (secondsLeft > 0) {
+          return secondsLeft;
+        }
+
+        if (appState.activeBlockStarted) {
+          return 0;
+        }
+      }
+
+      return getCurrentBlockDurationSeconds();
+    }
+
+    function syncTimerFromExpectedEnd() {
+      if (!appState.timerRunning || !appState.timerExpectedEndAt) {
+        return;
+      }
+
+      appState.timerSecondsLeft = Math.max(0, Math.ceil((appState.timerExpectedEndAt - Date.now()) / 1000));
+    }
+
+    function persistRunningTimerIfNeeded(force = false) {
+      const now = Date.now();
+
+      if (!force && now - (appState.timerLastSavedAt || 0) < 15000) {
+        return;
+      }
+
+      appState.timerLastSavedAt = now;
+      saveActiveCycleSnapshot();
+      saveState();
+    }
+
+    function renderTimer(value) {
+      timerDisplay.innerHTML = "";
+
+      formatTimerValue(value).split("").forEach(character => {
+        if (/\d/.test(character)) {
+          timerDisplay.appendChild(createDigitElement(character));
+        }
+
+        if (character === ":") {
+          timerDisplay.appendChild(createSeparatorElement());
+        }
+      });
+    }
+
+    function renderCycle() {
+      timelineList.innerHTML = "";
+      cycleTitle.textContent = appState.cycleName || t("cycle.defaultName");
+      const blockDuration = normalizeBlockDurationSeconds(appState.blockDurationSeconds || appState.studyCycle?.[0]?.duration || BLOCK_DURATION_SECONDS);
+      const totalHours = appState.totalStudyHours || ((appState.studyCycle.length * blockDuration) / 3600) || 34;
+      cycleSubtitle.textContent = t("cycle.subtitle", { total: formatTotalStudyHours(totalHours), blocks: appState.studyCycle.length, duration: formatDurationLabel(blockDuration) });
+      updateCompletedCounter();
+
+      if (appState.cycleFinished) {
+        updateCurrentCardDifficulty(null);
+        renderCompletionScreen();
+        return;
+      }
+
+      cycleCompletionScreen.classList.add("hidden");
+      cycleRunningScreen.classList.remove("hidden");
+
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+      const currentBlockIsMovable = currentBlockCanBeReordered();
+
+      if (currentBlock) {
+        const currentBlockKey = `${appState.currentBlockIndex}-${currentBlock.subject}-${currentBlock.difficulty}`;
+
+        currentSubject.textContent = currentBlock.subject;
+        updateCurrentCardDifficulty(currentBlock);
+        timerCard.classList.remove("hidden");
+        renderTimer(getVisibleTimerSeconds());
+
+        if (appState.timerRunning) {
+          playButton.textContent = t("actions.running");
+          playButton.disabled = true;
+          pauseButton.disabled = false;
+        } else if (appState.activeBlockStarted && appState.timerSecondsLeft > 0) {
+          playButton.textContent = t("actions.continue");
+          playButton.disabled = false;
+          pauseButton.disabled = true;
+        } else {
+          playButton.textContent = t("actions.start");
+          playButton.disabled = false;
+          pauseButton.disabled = true;
+        }
+
+        if (lastRenderedCurrentBlockKey !== currentBlockKey) {
+          lastRenderedCurrentBlockKey = currentBlockKey;
+          blinkCurrentCard();
+        }
+      } else {
+        currentSubject.textContent = "---";
+        updateCurrentCardDifficulty(null);
+        playButton.textContent = t("actions.start");
+        playButton.disabled = true;
+        pauseButton.disabled = true;
+        timerCard.classList.add("hidden");
+        renderTimer(getCurrentBlockDurationSeconds());
+      }
+
+      renderCycleMicrocopy();
+
+      const remainingBlocks = appState.studyCycle
+        .map((block, originalIndex) => ({
+          ...block,
+          originalIndex
+        }))
+        .filter(block => !block.completed);
+
+      remainingBlocks.forEach((block, visibleIndex) => {
+        const li = document.createElement("li");
+        li.classList.add("timeline-item", normalizeDifficulty(block.difficulty));
+        li.dataset.originalIndex = block.originalIndex;
+        li.draggable = false;
+
+        const isActiveBlock =
+          block.originalIndex === appState.currentBlockIndex && !appState.cycleFinished;
+
+        if (isActiveBlock) {
+          li.classList.add("active-block");
+
+          if (appState.activeBlockStarted && appState.timerRunning) {
+            li.classList.add("locked-block");
+          } else if (currentBlockIsMovable) {
+            li.classList.add("movable-active-block");
+          }
+        }
+
+        const status = isActiveBlock ? "â–¶" : "â—‹";
+
+        const difficultyLabel = getDifficultyLabel(block.difficulty);
+
+        li.innerHTML = `
+          <span class="timeline-status">${status}</span>
+          <span class="timeline-index">${visibleIndex + 1}.</span>
+          <span class="timeline-subject drag-area">${escapeHtml(block.subject)}</span>
+          <span class="difficulty-badge ${normalizeDifficulty(block.difficulty)}">${difficultyLabel}</span>
+          <span class="timeline-duration">${formatDurationLabel(block.duration)}</span>
+        `;
+
+        timelineList.appendChild(li);
+      });
+
+      enableTimelineDragAndDrop();
+
+      timelineList.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function enableTimelineDragAndDrop() {
+      const items = timelineList.querySelectorAll(".timeline-item");
+      let draggedOriginalIndex = null;
+
+      items.forEach(item => {
+        const originalIndex = Number(item.dataset.originalIndex);
+        const isActiveBlock = originalIndex === appState.currentBlockIndex;
+        const activeBlockIsLocked = isActiveBlock && appState.activeBlockStarted && appState.timerRunning;
+
+        if (activeBlockIsLocked || appState.cycleFinished) {
+          return;
+        }
+
+        item.addEventListener("mousedown", event => {
+          const clickedInteractiveElement =
+            event.target.closest("button") ||
+            event.target.closest("select") ||
+            event.target.closest(".priority-menu");
+
+          if (clickedInteractiveElement || !event.target.closest(".drag-area")) {
+            item.draggable = false;
+            return;
+          }
+
+          item.draggable = true;
+        });
+
+        item.addEventListener("dragstart", event => {
+          if (originalIndex === appState.currentBlockIndex && appState.activeBlockStarted && appState.timerRunning) {
+            event.preventDefault();
+            return;
+          }
+
+          storePausedCurrentBlockTime();
+          draggedOriginalIndex = originalIndex;
+          item.classList.add("dragging");
+        });
+
+        item.addEventListener("dragover", event => {
+          event.preventDefault();
+          item.classList.add("drag-over");
+        });
+
+        item.addEventListener("dragleave", () => {
+          item.classList.remove("drag-over");
+        });
+
+        item.addEventListener("drop", event => {
+          event.preventDefault();
+
+          const targetOriginalIndex = Number(item.dataset.originalIndex);
+          clearDragOverStyles();
+          const minimumMovableIndex = appState.activeBlockStarted && appState.timerRunning
+            ? appState.currentBlockIndex + 1
+            : appState.currentBlockIndex;
+
+          if (
+            draggedOriginalIndex !== null &&
+            draggedOriginalIndex !== targetOriginalIndex &&
+            draggedOriginalIndex >= minimumMovableIndex &&
+            targetOriginalIndex >= minimumMovableIndex
+          ) {
+            storePausedCurrentBlockTime();
+            moveItem(appState.studyCycle, draggedOriginalIndex, targetOriginalIndex);
+            syncCurrentTimerFromBlock();
+            saveActiveCycleSnapshot();
+            saveState();
+            renderCycle();
+          }
+        });
+
+        item.addEventListener("dragend", () => {
+          item.classList.remove("dragging");
+          item.draggable = false;
+          draggedOriginalIndex = null;
+          clearDragOverStyles();
+        });
+      });
+    }
+
+    function playBellSound() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioContext) {
+        return;
+      }
+
+      const audioContext = new AudioContext();
+      const now = audioContext.currentTime;
+
+      function createBellTone(frequency, startTime, duration) {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+
+        gain.gain.setValueAtTime(0.001, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.28, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      createBellTone(880, now, 0.9);
+      createBellTone(1320, now + 0.08, 0.7);
+
+      setTimeout(() => {
+        audioContext.close?.();
+      }, 1200);
+    }
+
+    function handlePlayButtonClick() {
+      if (appState.cycleFinished) {
+        returnToSetupFromCycle();
+        return;
+      }
+
+      startCurrentBlockTimer();
+    }
+
+    function startCurrentBlockTimer() {
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+
+      if (!currentBlock || appState.timerRunning) {
+        return;
+      }
+
+      appState.activeBlockStarted = true;
+      appState.timerRunning = true;
+
+      const storedRemainingSeconds = getStoredBlockRemainingSeconds(currentBlock);
+
+      if (storedRemainingSeconds !== null) {
+        appState.timerSecondsLeft = storedRemainingSeconds;
+      } else if (!appState.timerSecondsLeft || appState.timerSecondsLeft <= 0) {
+        appState.timerSecondsLeft = getCurrentBlockDurationSeconds();
+      }
+
+      delete currentBlock.remainingSeconds;
+      appState.timerExpectedEndAt = Date.now() + (appState.timerSecondsLeft * 1000);
+      appState.timerLastSavedAt = 0;
+
+      persistRunningTimerIfNeeded(true);
+      renderCycle();
+
+      clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        syncTimerFromExpectedEnd();
+        renderTimer(appState.timerSecondsLeft);
+        persistRunningTimerIfNeeded(false);
+
+        if (appState.timerSecondsLeft <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          appState.timerExpectedEndAt = null;
+          persistRunningTimerIfNeeded(true);
+          finishCurrentBlock();
+        }
+      }, 1000);
+    }
+
+    function pauseCurrentBlockTimer() {
+      if (!appState.timerRunning) {
+        return;
+      }
+
+      syncTimerFromExpectedEnd();
+      clearInterval(timerInterval);
+      timerInterval = null;
+
+      appState.timerRunning = false;
+      appState.activeBlockStarted = true;
+      appState.timerExpectedEndAt = null;
+      appState.timerLastSavedAt = 0;
+
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+
+      if (currentBlock) {
+        currentBlock.remainingSeconds = clampTimerSeconds(appState.timerSecondsLeft, getCurrentBlockDurationSeconds());
+      }
+
+      saveActiveCycleSnapshot();
+      saveState();
+      renderCycle();
+    }
+    function clearActiveCycle() {
+      appState.activeCycleId = null;
+      appState.cycleStarted = false;
+      appState.cycleFinished = false;
+      appState.studyCycle = [];
+      appState.cycleName = "";
+      appState.totalStudyHours = 34;
+      appState.blockDurationSeconds = BLOCK_DURATION_SECONDS;
+      appState.currentBlockIndex = 0;
+      appState.timeLeft = BLOCK_DURATION_SECONDS;
+      appState.activeBlockStarted = false;
+      appState.timerRunning = false;
+      appState.timerSecondsLeft = getCurrentBlockDurationSeconds();
+      appState.timerExpectedEndAt = null;
+      appState.timerLastSavedAt = 0;
+      appState.activeCycleCompletedCount = 0;
+    }
+
+    function returnToSetupFromCycle() {
+      syncTimerFromExpectedEnd();
+      clearInterval(timerInterval);
+      timerInterval = null;
+
+      if (appState.cycleFinished) {
+        saveResetActiveCycleSnapshot();
+      } else {
+        saveActiveCycleSnapshot();
+      }
+
+      clearActiveCycle();
+
+      saveState();
+      renderApp();
+    }
+
+    function finishCurrentBlock() {
+      const currentBlock = appState.studyCycle[appState.currentBlockIndex];
+
+      if (!currentBlock) {
+        return;
+      }
+
+      appState.timerRunning = false;
+      appState.timerSecondsLeft = getCurrentBlockDurationSeconds();
+      appState.timerExpectedEndAt = null;
+      appState.timerLastSavedAt = 0;
+      appState.activeBlockStarted = true;
+      delete currentBlock.remainingSeconds;
+
+      playButton.disabled = true;
+      timerCard.classList.remove("hidden");
+      renderTimer(0);
+      playBellSound();
+
+      const activeItem = document.querySelector(".timeline-item.active-block");
+
+      if (activeItem) {
+        activeItem.classList.add("completed-block");
+        activeItem.innerHTML += `<span class="finished-label">${t("completion.finishedLabel")}</span>`;
+
+        setTimeout(() => {
+          activeItem.classList.add("fade-to-nothing");
+        }, 450);
+      }
+
+      setTimeout(() => {
+        currentBlock.completed = true;
+
+        const nextBlockIndex = appState.currentBlockIndex + 1;
+
+        if (nextBlockIndex >= appState.studyCycle.length) {
+          appState.cycleFinished = true;
+          appState.cycleStarted = false;
+          appState.completedCyclesCount = (appState.completedCyclesCount || 0) + 1;
+          appState.activeCycleCompletedCount = (appState.activeCycleCompletedCount || 0) + 1;
+          appState.activeBlockStarted = false;
+          appState.timerRunning = false;
+          appState.timerSecondsLeft = getCurrentBlockDurationSeconds();
+          appState.timerExpectedEndAt = null;
+          appState.timerLastSavedAt = 0;
+
+          saveResetActiveCycleSnapshot();
+        } else {
+          appState.currentBlockIndex = nextBlockIndex;
+          appState.timeLeft = getCurrentBlockDurationSeconds();
+          appState.activeBlockStarted = getStoredBlockRemainingSeconds(appState.studyCycle[nextBlockIndex]) !== null;
+          appState.timerRunning = false;
+          appState.timerSecondsLeft = getBlockResumeSeconds(appState.studyCycle[nextBlockIndex]);
+          appState.timerExpectedEndAt = null;
+          appState.timerLastSavedAt = 0;
+
+          saveActiveCycleSnapshot();
+        }
+
+        saveState();
+        renderCycle();
+      }, 1400);
+    }
+
+    addSubjectButton.addEventListener("click", addSubject);
+
+    generateCycleButton.addEventListener("click", openCycleNameModal);
+
+    playButton.addEventListener("click", handlePlayButtonClick);
+
+    pauseButton.addEventListener("click", pauseCurrentBlockTimer);
+
+    backButton.addEventListener("click", returnToSetupFromCycle);
+
+    bottomBackButton.addEventListener("click", returnToSetupFromCycle);
+
+    completionBackButton.addEventListener("click", returnToSetupFromCycle);
+
+    cancelDeleteCycleButton.addEventListener("click", closeDeleteCycleModal);
+
+    confirmDeleteCycleButton.addEventListener("click", confirmDeleteSavedCycle);
+
+    deleteCycleModal.addEventListener("click", function (event) {
+      if (event.target === deleteCycleModal) {
+        closeDeleteCycleModal();
+      }
+    });
+
+    cancelCycleNameButton.addEventListener("click", closeCycleNameModal);
+
+    confirmCycleNameButton.addEventListener("click", startCycle);
+
+    if (languageSelect) {
+      languageSelect.addEventListener("change", function () {
+        setLanguage(this.value, { manual: true });
+      });
+    }
+
+    tutorialOpenButton.addEventListener("click", openTutorial);
+    tutorialSkipButton.addEventListener("click", () => closeTutorial({ markSeen: true }));
+    tutorialBackButton.addEventListener("click", goToPreviousTutorialStep);
+    tutorialNextButton.addEventListener("click", goToNextTutorialStep);
+
+
+    cycleHoursInput.addEventListener("input", normalizeCycleHoursInput);
+
+    cycleHoursInput.addEventListener("change", normalizeCycleHoursInput);
+
+    cycleHoursInput.addEventListener("blur", normalizeCycleHoursInput);
+
+    cycleMinutesInput.addEventListener("input", normalizeCycleMinutesInput);
+
+    cycleMinutesInput.addEventListener("change", normalizeCycleMinutesInput);
+
+    cycleMinutesInput.addEventListener("blur", normalizeCycleMinutesInput);
+
+    cycleNameInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        startCycle();
+      }
+
+      if (event.key === "Escape") {
+        closeCycleNameModal();
+      }
+    });
+
+    subjectInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        addSubject();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      if (!tutorialModal.classList.contains("hidden")) {
+        closeTutorial({ markSeen: true });
+        return;
+      }
+
+      if (!deleteCycleModal.classList.contains("hidden")) {
+        closeDeleteCycleModal();
+      }
+
+      if (!cycleNameModal.classList.contains("hidden")) {
+        closeCycleNameModal();
+      }
+
+      document.querySelectorAll("#subject-list .priority-menu.open").forEach(menu => {
+        menu.classList.remove("open");
+        menu.closest("li")?.classList.remove("priority-dropdown-open");
+        menu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.addEventListener("click", function (event) {
+      if (event.target.closest(".priority-menu")) {
+        return;
+      }
+
+      document.querySelectorAll("#subject-list .priority-menu.open").forEach(menu => {
+        menu.classList.remove("open");
+        menu.closest("li")?.classList.remove("priority-dropdown-open");
+        menu.querySelector(".priority-menu-button")?.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    window.addEventListener("beforeunload", function () {
+      syncTimerFromExpectedEnd();
+      persistRunningTimerIfNeeded(true);
+    });
+    initializeI18n().then(() => {
+      loadState();
+      renderApp();
+      showTutorialOnFirstVisit();
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js").catch(error => {
+          console.warn("Service worker registration failed:", error);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

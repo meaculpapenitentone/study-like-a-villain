@@ -1,0 +1,129 @@
+{
+  "app": {
+    "title": "Study Like a Villain",
+    "documentTitle": "Study Like a Villain ポモドーロ"
+  },
+  "language": {
+    "label": "言語",
+    "english": "English",
+    "portuguese": "Português",
+    "spanish": "Español",
+    "french": "Français",
+    "german": "Deutsch",
+    "italian": "Italiano",
+    "japanese": "日本語"
+  },
+  "setup": {
+    "subjectsTitle": "科目リスト",
+    "subjectPlaceholder": "科目を入力",
+    "addSubject": "追加",
+    "emptySubjects": "まだ科目が追加されていません。",
+    "generateCycle": "サイクルを生成！",
+    "savedCyclesTitle": "保存済みサイクル",
+    "emptyCycles": "保存済みサイクルはまだありません。"
+  },
+  "difficulty": {
+    "label": "優先度:",
+    "ariaLabel": "優先度",
+    "easy": "低",
+    "medium": "中",
+    "hard": "高"
+  },
+  "actions": {
+    "back": "↩ 戻る",
+    "pause": "⏸ 一時停止",
+    "start": "▶ 開始",
+    "continue": "▶ 続ける",
+    "running": "進行中...",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "delete": "削除"
+  },
+  "cycle": {
+    "defaultName": "ヴィラン学習サイクル",
+    "title": "学習サイクル",
+    "nameTitle": "新しいサイクル名:",
+    "namePlaceholder": "学習サイクル - 試験週",
+    "totalStudyTime": "総学習時間:",
+    "blockDuration": "各科目の時間:",
+    "modalHelp": "総時間と各ブロックの標準時間を選んでください。",
+    "currentSubject": "現在の科目:",
+    "remainingTime": "残り時間:",
+    "timeline": "タイムライン",
+    "subtitle": "合計 {total} · {duration} のブロック {blocks} 個",
+    "progress": "{completed}/{total} 完了",
+    "savedProgress": "{completed}/{total} ブロック完了",
+    "savedStatus": "進行中",
+    "completedTimes": "サイクル完了 {count} 回",
+    "unnamedSubject": "名前のない科目"
+  },
+  "duration": {
+    "thirtyMinutes": "30分",
+    "oneHour": "1時間",
+    "ninetyMinutes": "1時間半",
+    "twoHours": "2時間",
+    "hourShort": "時間",
+    "minuteShort": "分"
+  },
+  "completion": {
+    "firstCycle": "おめでとうございます。最初のサイクルを完了しました！",
+    "anotherCycle": "もう一つのサイクルを完了しました！",
+    "finishedLabel": "完了！"
+  },
+  "deleteCycle": {
+    "title": "このサイクルを削除してもよろしいですか？",
+    "warning": "この操作は元に戻せません。"
+  },
+  "errors": {
+    "saveState": "ポモドーロの状態を保存できませんでした。",
+    "saveStorage": "{key} を保存できませんでした。",
+    "removeStorage": "{key} を削除できませんでした。",
+    "readStorage": "{key} を読み取れませんでした。"
+  },
+  "theme": {
+    "light": "ライトテーマ",
+    "dark": "ダークテーマ"
+  },
+  "tutorial": {
+    "open": "使い方",
+    "openButton": "?",
+    "skip": "スキップ",
+    "back": "戻る",
+    "next": "次へ",
+    "finish": "勉強を始めよう！",
+    "progress": "{current}/{total}",
+    "steps": {
+      "welcome": {
+        "title": "Study Like a Villainへようこそ",
+        "text": "科目、優先度、時間で学習サイクルを作れます。アプリがブロックを整理するので、あなたは計画を実行するだけです。"
+      },
+      "subjects": {
+        "title": "科目を追加する",
+        "text": "勉強する必要がある科目を登録します。そのあと、それぞれの優先度を低・中・高から選びます。"
+      },
+      "priority": {
+        "title": "優先度で回数が決まる",
+        "text": "優先度が高い科目はサイクル内で多く表示されます。優先度が低い科目は少なく表示されます。"
+      },
+      "cycle": {
+        "title": "サイクルを設定する",
+        "text": "サイクルを作成するときに、名前、総学習時間、各ブロックの長さを選びます。30分、1時間、1時間半、2時間のブロックを使えます。"
+      },
+      "timer": {
+        "title": "タイマーが終わるまで勉強する",
+        "text": "タイマーを開始して現在の科目を勉強します。時間が終わると、アプリが自動的にブロックを完了し、次の科目へ進みます。"
+      },
+      "reorder": {
+        "title": "一時停止して並べ替える",
+        "text": "後のブロックをドラッグして順番を変えられます。現在の科目を動かしたい場合は、先にタイマーを一時停止してください。おすすめ：切り替える前にできるだけブロックを終わらせ、次のブロックの前に短い休憩を取りましょう。"
+      }
+    }
+  },
+  "microcopy": {
+    "noSubjects": "最初の科目を追加してサイクルを始めましょう。",
+    "readyToGenerate": "学習サイクルを生成しましょう。次のステップで総時間とブロックの長さを選べます。",
+    "beforeStart": "始める前にブロックをドラッグして順番を調整できます。",
+    "timerRunning": "タイマー実行中：ブロックが終わるまで現在の科目に集中しましょう。",
+    "timerPaused": "タイマー一時停止中：現在の科目を含め、ブロックを並べ替えできます。"
+  }
+}

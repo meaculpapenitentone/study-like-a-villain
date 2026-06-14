@@ -1,0 +1,129 @@
+{
+  "app": {
+    "title": "Study Like a Villain",
+    "documentTitle": "Pomodoro Study Like a Villain"
+  },
+  "language": {
+    "label": "Langue",
+    "english": "English",
+    "portuguese": "Português",
+    "spanish": "Español",
+    "french": "Français",
+    "german": "Deutsch",
+    "italian": "Italiano",
+    "japanese": "日本語"
+  },
+  "setup": {
+    "subjectsTitle": "Liste des matières",
+    "subjectPlaceholder": "Saisissez une matière",
+    "addSubject": "Ajouter",
+    "emptySubjects": "Aucune matière ajoutée pour le moment.",
+    "generateCycle": "Générer le cycle !",
+    "savedCyclesTitle": "Cycles enregistrés",
+    "emptyCycles": "Aucun cycle enregistré pour le moment."
+  },
+  "difficulty": {
+    "label": "Niveau de priorité :",
+    "ariaLabel": "Niveau de priorité",
+    "easy": "Faible",
+    "medium": "Moyen",
+    "hard": "Élevé"
+  },
+  "actions": {
+    "back": "↩ Retour",
+    "pause": "⏸ Pause",
+    "start": "▶ Démarrer",
+    "continue": "▶ Continuer",
+    "running": "En cours...",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer"
+  },
+  "cycle": {
+    "defaultName": "Cycle d'étude du vilain",
+    "title": "Cycle d'étude",
+    "nameTitle": "Nom du nouveau cycle :",
+    "namePlaceholder": "Cycle d'étude - Semaine d'examens",
+    "totalStudyTime": "Temps total d'étude :",
+    "blockDuration": "Durée de chaque matière :",
+    "modalHelp": "Choisissez le temps total et la durée par défaut de chaque bloc.",
+    "currentSubject": "Matière actuelle :",
+    "remainingTime": "Temps restant :",
+    "timeline": "Chronologie",
+    "subtitle": "{total} au total · {blocks} blocs de {duration}",
+    "progress": "{completed}/{total} terminées",
+    "savedProgress": "{completed}/{total} blocs terminés",
+    "savedStatus": "En cours",
+    "completedTimes": "Cycle terminé {count} fois",
+    "unnamedSubject": "Matière sans nom"
+  },
+  "duration": {
+    "thirtyMinutes": "30 minutes",
+    "oneHour": "1 heure",
+    "ninetyMinutes": "1 heure et demie",
+    "twoHours": "2 heures",
+    "hourShort": "h",
+    "minuteShort": "min"
+  },
+  "completion": {
+    "firstCycle": "Félicitations, vous avez terminé votre premier cycle !",
+    "anotherCycle": "Vous avez terminé un autre cycle !",
+    "finishedLabel": "TERMINÉ !"
+  },
+  "deleteCycle": {
+    "title": "Voulez-vous vraiment supprimer ce cycle ?",
+    "warning": "Cette action ne peut pas être annulée."
+  },
+  "errors": {
+    "saveState": "Impossible d'enregistrer l'état du Pomodoro.",
+    "saveStorage": "Impossible d'enregistrer {key}.",
+    "removeStorage": "Impossible de supprimer {key}.",
+    "readStorage": "Impossible de lire {key}."
+  },
+  "theme": {
+    "light": "Thème clair",
+    "dark": "Thème sombre"
+  },
+  "tutorial": {
+    "open": "Mode d'emploi",
+    "openButton": "?",
+    "skip": "Passer",
+    "back": "Retour",
+    "next": "Suivant",
+    "finish": "On Étudie !",
+    "progress": "{current}/{total}",
+    "steps": {
+      "welcome": {
+        "title": "Bienvenue dans Study Like a Villain",
+        "text": "Créez des cycles d'étude par matière, priorité et durée. L'application organise vos blocs pour que vous n'ayez plus qu'à suivre le plan."
+      },
+      "subjects": {
+        "title": "Ajoutez vos matières",
+        "text": "Enregistrez les matières que vous devez étudier. Choisissez ensuite le niveau de priorité de chacune : faible, moyen ou élevé."
+      },
+      "priority": {
+        "title": "La priorité définit la répétition",
+        "text": "Les matières à priorité élevée apparaissent plus souvent dans le cycle. Les matières à faible priorité apparaissent moins souvent."
+      },
+      "cycle": {
+        "title": "Configurez votre cycle",
+        "text": "Lors de la création d'un cycle, choisissez le nom, le temps total d'étude et la durée de chaque bloc. Vous pouvez utiliser des blocs de 30 minutes, 1 heure, 1 heure et demie ou 2 heures."
+      },
+      "timer": {
+        "title": "Étudiez jusqu'à la fin du minuteur",
+        "text": "Lancez le minuteur et étudiez la matière actuelle. Lorsque le temps est écoulé, l'application termine automatiquement le bloc et passe à la matière suivante."
+      },
+      "reorder": {
+        "title": "Mettez en pause pour réorganiser",
+        "text": "Vous pouvez faire glisser les blocs futurs pour changer l'ordre. Si vous voulez déplacer la matière actuelle, mettez d'abord le minuteur en pause. Recommandation : essayez de terminer le bloc avant de changer et faites une courte pause avant le suivant."
+      }
+    }
+  },
+  "microcopy": {
+    "noSubjects": "Ajoutez votre première matière pour commencer votre cycle.",
+    "readyToGenerate": "Générez maintenant votre cycle d'étude. Vous pourrez choisir le temps total et la durée des blocs à l'étape suivante.",
+    "beforeStart": "Faites glisser les blocs pour ajuster l'ordre avant de commencer.",
+    "timerRunning": "Minuteur en cours : concentrez-vous sur la matière actuelle jusqu'à la fin du bloc.",
+    "timerPaused": "Minuteur en pause : vous pouvez réorganiser les blocs, y compris la matière actuelle."
+  }
+}
