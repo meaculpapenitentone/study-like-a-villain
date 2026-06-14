@@ -63,11 +63,11 @@
       "label": "Create study subjects and priorities"
     },
     {
-      "src": "screenshots/cycle-options-desktop.png",
+      "src": "screenshots/tutorial-desktop.png",
       "sizes": "1870x991",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Choose total study time and block duration"
+      "label": "Configure your study cycle"
     },
     {
       "src": "screenshots/timer-desktop.png",

@@ -1,4 +1,4 @@
-const CACHE_NAME = "study-like-a-villain-v16";
+const CACHE_NAME = "study-like-a-villain-v17";
 
 const CORE_ASSETS = [
   "./",
@@ -28,7 +28,7 @@ const CORE_ASSETS = [
   "icons/icon-32.png",
   "icons/icon-16.png",
   "screenshots/home-desktop.png",
-  "screenshots/cycle-options-desktop.png",
+  "screenshots/tutorial-desktop.png",
   "screenshots/timer-desktop.png"
 ];
 
