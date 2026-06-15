@@ -1,0 +1,49 @@
+{
+  "id": "./",
+  "name": "Study Like a Villain",
+  "short_name": "Study Villain",
+  "description": "Plan your subjects, build focused study cycles, and stay on track with a simple Pomodoro-style timer.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#12051f",
+  "theme_color": "#7c3aed",
+  "categories": ["education", "productivity"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/home-desktop.png",
+      "sizes": "1869x991",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Create study subjects and priorities"
+    },
+    {
+      "src": "screenshots/timer-desktop.png",
+      "sizes": "1868x990",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Follow your study cycle with a focused timer"
+    },
+    {
+      "src": "screenshots/tutorial-desktop.png",
+      "sizes": "1870x991",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Configure your study cycle"
+    }
+  ]
+}

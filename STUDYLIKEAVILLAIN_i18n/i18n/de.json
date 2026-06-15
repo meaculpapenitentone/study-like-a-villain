@@ -1,0 +1,129 @@
+{
+  "app": {
+    "title": "Study Like a Villain",
+    "documentTitle": "Study Like a Villain Pomodoro"
+  },
+  "language": {
+    "label": "Sprache",
+    "english": "English",
+    "portuguese": "Português",
+    "spanish": "Español",
+    "french": "Français",
+    "german": "Deutsch",
+    "italian": "Italiano",
+    "japanese": "日本語"
+  },
+  "setup": {
+    "subjectsTitle": "Fächerliste",
+    "subjectPlaceholder": "Fach eingeben",
+    "addSubject": "Hinzufügen",
+    "emptySubjects": "Noch keine Fächer hinzugefügt.",
+    "generateCycle": "Zyklus erstellen!",
+    "savedCyclesTitle": "Gespeicherte Zyklen",
+    "emptyCycles": "Noch keine Zyklen gespeichert."
+  },
+  "difficulty": {
+    "label": "Prioritätsstufe:",
+    "ariaLabel": "Prioritätsstufe",
+    "easy": "Niedrig",
+    "medium": "Mittel",
+    "hard": "Hoch"
+  },
+  "actions": {
+    "back": "↩ Zurück",
+    "pause": "⏸ Pause",
+    "start": "▶ Starten",
+    "continue": "▶ Fortsetzen",
+    "running": "Läuft...",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "delete": "Löschen"
+  },
+  "cycle": {
+    "defaultName": "Schurken-Lernzyklus",
+    "title": "Lernzyklus",
+    "nameTitle": "Name des neuen Zyklus:",
+    "namePlaceholder": "Lernzyklus - Prüfungswoche",
+    "totalStudyTime": "Gesamte Lernzeit:",
+    "blockDuration": "Dauer jedes Fachs:",
+    "modalHelp": "Wähle die Gesamtzeit und die Standarddauer jedes Blocks.",
+    "currentSubject": "Aktuelles Fach:",
+    "remainingTime": "Verbleibende Zeit:",
+    "timeline": "Zeitlinie",
+    "subtitle": "{total} gesamt · {blocks} Blöcke à {duration}",
+    "progress": "{completed}/{total} abgeschlossen",
+    "savedProgress": "{completed}/{total} Blöcke abgeschlossen",
+    "savedStatus": "Läuft",
+    "completedTimes": "Zyklus {count} Mal abgeschlossen",
+    "unnamedSubject": "Unbenanntes Fach"
+  },
+  "duration": {
+    "thirtyMinutes": "30 Minuten",
+    "oneHour": "1 Stunde",
+    "ninetyMinutes": "1,5 Stunden",
+    "twoHours": "2 Stunden",
+    "hourShort": "h",
+    "minuteShort": "min"
+  },
+  "completion": {
+    "firstCycle": "Glückwunsch, du hast deinen ersten Zyklus abgeschlossen!",
+    "anotherCycle": "Du hast einen weiteren Zyklus abgeschlossen!",
+    "finishedLabel": "FERTIG!"
+  },
+  "deleteCycle": {
+    "title": "Möchtest du diesen Zyklus wirklich löschen?",
+    "warning": "Diese Aktion kann nicht rückgängig gemacht werden."
+  },
+  "errors": {
+    "saveState": "Der Pomodoro-Status konnte nicht gespeichert werden.",
+    "saveStorage": "{key} konnte nicht gespeichert werden.",
+    "removeStorage": "{key} konnte nicht entfernt werden.",
+    "readStorage": "{key} konnte nicht gelesen werden."
+  },
+  "theme": {
+    "light": "Helles Design",
+    "dark": "Dunkles Design"
+  },
+  "tutorial": {
+    "open": "Anleitung",
+    "openButton": "?",
+    "skip": "Überspringen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Los Geht's!",
+    "progress": "{current}/{total}",
+    "steps": {
+      "welcome": {
+        "title": "Willkommen bei Study Like a Villain",
+        "text": "Erstelle Lernzyklen nach Fach, Priorität und Zeit. Die App organisiert deine Blöcke, damit du nur noch den Plan ausführen musst."
+      },
+      "subjects": {
+        "title": "Füge deine Fächer hinzu",
+        "text": "Trage die Fächer ein, die du lernen musst. Wähle danach für jedes Fach die Priorität: niedrig, mittel oder hoch."
+      },
+      "priority": {
+        "title": "Priorität bestimmt Wiederholung",
+        "text": "Fächer mit hoher Priorität erscheinen häufiger im Zyklus. Fächer mit niedriger Priorität erscheinen seltener."
+      },
+      "cycle": {
+        "title": "Konfiguriere deinen Zyklus",
+        "text": "Wenn du einen Zyklus erstellst, wähle den Namen, die gesamte Lernzeit und die Dauer jedes Blocks. Du kannst Blöcke von 30 Minuten, 1 Stunde, 1,5 Stunden oder 2 Stunden verwenden."
+      },
+      "timer": {
+        "title": "Lerne, bis der Timer abläuft",
+        "text": "Starte den Timer und lerne das aktuelle Fach. Wenn die Zeit abläuft, schließt die App den Block automatisch ab und wechselt zum nächsten Fach."
+      },
+      "reorder": {
+        "title": "Pausieren zum Neuordnen",
+        "text": "Du kannst zukünftige Blöcke ziehen, um die Reihenfolge zu ändern. Wenn du das aktuelle Fach verschieben willst, pausiere zuerst den Timer. Empfehlung: Versuche, den Block vor dem Wechsel zu beenden, und mache vor dem nächsten eine kurze Pause."
+      }
+    }
+  },
+  "microcopy": {
+    "noSubjects": "Füge dein erstes Fach hinzu, um deinen Zyklus zu starten.",
+    "readyToGenerate": "Erstelle jetzt deinen Lernzyklus. Im nächsten Schritt kannst du die Gesamtzeit und die Blockdauer wählen.",
+    "beforeStart": "Ziehe die Blöcke, um die Reihenfolge der Fächer zu ändern.",
+    "timerRunning": "Timer läuft: Konzentriere dich auf das aktuelle Fach, bis der Block endet.",
+    "timerPaused": "Timer pausiert: Du kannst die Blöcke neu ordnen, einschließlich des aktuellen Fachs."
+  }
+}
