@@ -10,8 +10,9 @@ This is the production PWA build for Microsoft Store packaging.
   - `icons/icon-192.png`
   - `icons/icon-512.png`
 - `service-worker.js` cache version:
-  - `study-like-a-villain-v21-production`
-- The service worker precaches local essential assets only.
+  - `study-like-a-villain-v22`
+- The service worker precaches essential assets with `cache.addAll`.
+- Optional i18n, quote, and screenshot assets use `Promise.allSettled` so they cannot break installation.
 - The service worker ignores non-GET and cross-origin requests.
 - All PWA paths are relative for GitHub Pages compatibility.
 
